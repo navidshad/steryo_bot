@@ -2,7 +2,7 @@ var tcms = require('telegram-cms');
 
 var option = require('./config');
 option.fn = {
-    api: require('../lib/functions_api'),
+    api: require('../s_lib/functions_api'),
     musicmetadataModule: require('musicmetadata'),
     musicmetadata: require('../lib/musicmetadata'),
 }
