@@ -111,7 +111,7 @@ var sendSavedMediaDetailToUser = function(body, detail, userid)
     mess += '\n' + '<code>' + '🆔' + '</code>' + detail.telegramid;
     
     // link
-    var startParam = `${fn.mstr.archiveMusic.linkRoutes.media}-${mediaid}`;
+    var startParam = `${fn.mstr.archiveMusic.linkRoutes.media}-${detail._id}`;
     var link = fn.getStartLink(startParam);
     mess += '\n\n' + '🌐 ' + link;
 

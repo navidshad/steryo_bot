@@ -4,7 +4,7 @@ var option = require('./config');
 option.fn = {
     api: require('../s_lib/functions_api'),
     musicmetadataModule: require('musicmetadata'),
-    musicmetadata: require('../lib/musicmetadata'),
+    musicmetadata: require('../s_lib/musicmetadata'),
 }
 
 // start bot
