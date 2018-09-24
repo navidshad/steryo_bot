@@ -22,7 +22,7 @@ var sendPlayListTouser = function(userid, playlist)
 
     var liked = playlist.liked;
     var tx_like = (liked) ? fn.mstr.archiveMusic['liked'] : fn.mstr.archiveMusic['disliked'];
-    detailArr.push([ {'text': '❌', 'callback_data': fn_close}, ]);
+    //push([ {'text': '❌', 'callback_data': fn_close}, ]);
 
     //message
     var text = 'اطلاعات لیست پخش' + '\n' +
@@ -56,7 +56,7 @@ var getallmedia = function(query, id){
     {
         for (let index = 0; index < playlist.list.length; index++) {
             const item = playlist.list[index];
-            await media.show(query.from.id, query.message.chat.id, item._id, {'mode':'main'});
+            await media.showbyid(query.from.id, query.message.chat.id, item._id, {'mode':'main'});
         }
     });
 }
