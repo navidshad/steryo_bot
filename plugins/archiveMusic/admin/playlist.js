@@ -1,3 +1,17 @@
+let homePlaylists = 'homePlaylists';
+
+function getHomePlayLists()
+{
+    let list = [];
+
+    let homePlaylistsOption = fn.getModuleOption('homePlaylists', {create: true});
+    homePlaylistsOption.option.datas.forEach(playlist => {
+        if(playlist.key) list.push(playlist);
+    })
+
+    return list;
+}
+
 var show = function(userid, injectedtext)
 {
     var list = [ [fn.mstr.archiveMusic.btns['addlist'], fn.mstr.archiveMusic['back']].reverse() ];
@@ -40,17 +54,12 @@ var showplaylist = function(userid, playlist)
     var fn_reload   = qTag['archiveMusic'] + '-' + qTag['admin'] + '-' + qTag['a_playlist'] + '-' + qTag['reload'] + '-' + playlist.id;
     var fn_delete   = qTag['archiveMusic'] + '-' + qTag['admin'] + '-' + qTag['a_playlist'] + '-' + qTag['delete'] + '-' + playlist.id;
     var fn_link     = qTag['archiveMusic'] + '-' + qTag['admin'] + '-' + qTag['a_playlist'] + '-' + qTag['link'] + '-' + playlist.id;
+    var fn_settoHome= qTag['archiveMusic'] + '-' + qTag['admin'] + '-' + qTag['a_playlist'] + '-' + qTag['settoHome'] + '-' + playlist.id;
 
-    //medias
-    playlist.list.forEach(element => {
-        var fn_show = qTag['archiveMusic'] + '-' + qTag['admin'] + '-' + qTag['a_playlist'] + '-' + qTag['showmedia'] + '-' + element._id;
-        var fn_deleteSong = qTag['archiveMusic'] + '-' + qTag['admin'] + '-' + qTag['a_playlist'] + '-' + qTag['deletefromlist'] + '-' + playlist.id + '-' + element._id;
-        var tx_title = element.title;
-        detailArr.push([
-            {'text': tx_title, 'callback_data': fn_show},
-            {'text': '❌', 'callback_data': fn_deleteSong}
-        ].reverse());
-    });
+    // set to home
+    let sth = 'صفحه اصلی';
+    let setToHomeData = fn.getModuleData(homePlaylists, playlist.name);
+    let setToHome_tx = (setToHomeData.key) ? `${sth} ✅` : sth;
 
     //manage
     detailArr.push([
@@ -62,8 +71,20 @@ var showplaylist = function(userid, playlist)
 
     //sharing
     detailArr.push([
-        {'text': '🌐 لینک', 'callback_data': fn_link},           
+        {'text': '🌐 لینک', 'callback_data': fn_link},
+        {'text': setToHome_tx, 'callback_data': fn_settoHome},
     ]);
+
+    //medias
+    playlist.list.forEach(element => {
+        var fn_show = qTag['archiveMusic'] + '-' + qTag['admin'] + '-' + qTag['a_playlist'] + '-' + qTag['showmedia'] + '-' + element._id;
+        var fn_deleteSong = qTag['archiveMusic'] + '-' + qTag['admin'] + '-' + qTag['a_playlist'] + '-' + qTag['deletefromlist'] + '-' + playlist.id + '-' + element._id;
+        var tx_title = element.title;
+        detailArr.push([
+            {'text': tx_title, 'callback_data': fn_show},
+            {'text': '❌', 'callback_data': fn_deleteSong}
+        ].reverse());
+    });
 
     //message
     var text = 'اطلاعات لیست پخش' + '\n' +
@@ -81,11 +102,28 @@ var close = function(query)
     global.robot.bot.deleteMessage(query.message.chat.id, query.message.message_id);
 }
 
-var editname = function(message, id)
+var editname = async function(message, id)
 {
-    fn.api.editplaylist({'name': message.text, 'id':id}, (result) => {
-        if(!result.key)  {global.fn.sendMessage(message.from.id, fn.mstr.archiveMusic.mess['chooseothernameforlist']); return;}
+    let newName = message.text;
+
+    // edit playlist in home
+    let pl = await fn.api.getplaylistByid(id);
+    let name = pl.name;
+    let setToHomeData = fn.getModuleData(homePlaylists, name);
+    setToHomeData.name = newName;
+    setToHomeData.value = id;
+    fn.putDatasToModuleOption(homePlaylists, [setToHomeData]);
+
+    // edit playlist
+    fn.api.editplaylist({'name': newName, 'id':id}, (result) =>
+    {
+        if(!result.key) {
+            global.fn.sendMessage(message.from.id, fn.mstr.archiveMusic.mess['chooseothernameforlist']); 
+            return;
+        }
+
         showplaylist(message.from.id, result.playlist);
+        show(message.from.id, 'انجام شد.');
     });
 }
 
@@ -194,6 +232,26 @@ var query = async function(query, speratedQuery)
         var link = fn.getStartLink(startParam);
         fn.sendMessage(query.from.id, link);
     }
+
+    //set to home
+    else if (speratedQuery[3] === qTag['settoHome'])
+    {
+        close(query);
+
+        let id = speratedQuery[last];
+
+        // et playlist
+        let pl = await fn.api.getplaylistByid(id);
+
+        let name = pl.name;
+        let setToHomeData = fn.getModuleData(homePlaylists, name);
+        setToHomeData.key = !setToHomeData.key;
+        setToHomeData.name = name;
+        setToHomeData.value = id;
+
+        fn.putDatasToModuleOption(homePlaylists, [setToHomeData]);
+        showplaylist(query.from.id, pl);
+    }
 }
 
-module.exports = { routting, query, }
+module.exports = { routting, query, getHomePlayLists }

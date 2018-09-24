@@ -2,14 +2,19 @@ var checkRoute = function(option){
 
     var access = fn.mstr.userAbility.access
     var btnsArr  = [
-        access[0].value, //archive
-        access[1].value, //favorites
-        access[2].value, //playlists
+        // access[0].value, //archive
+        // access[1].value, //favorites
+        // access[2].value, //playlists
     ];
 
     fn.mstr.userAbility.access.map((item) => {
         btnsArr.push(item.value);
     });
+
+    // add home playlists
+    let playlists = fn.m.archiveMusic.playlists.getHomePlayLists();
+    playlists.forEach(playlist => { btnsArr.push(playlist.name) });
+
 
     var result = {}
     //check text message
@@ -22,7 +27,7 @@ var checkRoute = function(option){
         }
     });
 
-    //checl seperate section
+    //check seperate section
     if(option.speratedSection){
         option.speratedSection.forEach(section => {
             btnsArr.forEach(btn =>
@@ -53,11 +58,17 @@ var getButtons = function (){
     var mName = fn.mstr.userAbility['modulename'];
     var userAbilityModuleOption = fn.getModuleOption(mName, {'create':true, 'setting': {'name':mName, 'btn_order':1, 'datas':[], 'active': true, 'category': fn.mstr.category['maincategory']}}).option;
     var states = getprivilegeStatus(userAbilityModuleOption);
+    
     fn.mstr.userAbility.access.map((item) => {
         if(item.name === 'search') return;
         else if(states[item.name] && states[item.name].key === true)
             buttons.push(item.value);
     });
+
+    // add home playlists
+    let playlists = fn.m.archiveMusic.playlists.getHomePlayLists();
+    playlists.forEach(playlist => { buttons.push(playlist.name) });
+
     return buttons;
 }
 
@@ -84,6 +95,17 @@ var routting = function(message, speratedSection, user)
     //favorites
     if(states['favorites'].key && checkedRoute_text.button === states['favorites'].value)
         favorite.show(message.from.id);
+
+    // home playlist
+    let playlists = fn.m.archiveMusic.playlists.getHomePlayLists();
+    for (let i = 0; i < playlists.length; i++) 
+    {
+        const plDetail = playlists[i];
+        if(text !== plDetail.name) continue;
+
+        let plId = plDetail.value;
+        playlist.showById(message.from.id, plId);
+    }
 }
 
 var search = require('./user/search');

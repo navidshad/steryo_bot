@@ -72,9 +72,23 @@ var show = async function(userid, text)
 {
     var titles = [];
 
+    // home playlists
+    let homePlaylists = fn.m.archiveMusic.playlists.getHomePlayLists();
+    let isInHome = function(id)
+    {
+        let isInHomeKey = false;
+        homePlaylists.forEach(item => {
+            if(item.value == id) isInHomeKey = true;
+        })
+        
+        return isInHomeKey;
+    }
+
     //get playlists
-    var playlist = await fn.api.getplaylists().then();
-    playlist.map(item => { titles.push(item.name)});
+    var playlists = await fn.api.getplaylists().then();
+    playlists.map(item => { 
+        if(!isInHome(item._id)) titles.push(item.name);
+    });
 
     //show list
     var mess = text;

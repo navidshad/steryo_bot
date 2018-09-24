@@ -44,6 +44,7 @@ module.exports.archiveMusic = {
         back : 'back',
         like :'like',
         link:'lnk',
+        settoHome: 'sHome',
     },
 
     mess : {
