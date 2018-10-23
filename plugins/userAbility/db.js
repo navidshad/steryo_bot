@@ -50,8 +50,15 @@ var favoriteBagSchema = new Schema({
   type: String,
 })
 
+var limitationMessage = new Schema({
+  userid: Number,
+  limitation: Number,
+  date: { type: Date, default: Date.today() },
+});
+
 module.exports.dailylimitation = mongoose.model('dailylimitation', dailylimitationSchema);
 module.exports.word = mongoose.model('words', wordSchema);
 module.exports.mediaSearch = mongoose.model('mediaSearch', mediaSearchSchema);
 module.exports.media = mongoose.model('medias', mediaSchema);
 module.exports.favbag = mongoose.model('favoriteBags', favoriteBagSchema);
+module.exports.limitationMessage = mongoose.model('limitationMessages', limitationMessage);

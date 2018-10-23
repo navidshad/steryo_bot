@@ -102,6 +102,19 @@ var show = async function(userid, chatid, returnedmedia, flag)
         var limitMess = Dstatistics.limitMess + '\n';
         limitMess = `محدودیت روزانه ${Dstatistics.limit} ترانه`;
         global.fn.sendMessage(userid, Dstatistics.limitMess);
+        
+        //record limitation message state
+        let isTodayLimited = await global.fn.db.limitationMessage
+                                .count({'userid' : userid, 'date': Date.today()}).exec().then();
+                                
+        if(isTodayLimited < 1)
+        {
+            await new global.fn.db.limitationMessage({
+                'userid' : userid, 
+                'limitation': Dstatistics.limit,
+                }).save().then();
+        }
+
         return;
     }
 
