@@ -10,6 +10,8 @@ var mstr = {
     btns: {
         settings : '⚙️' + ' - ' + 'تنظیمات',
         backsetting: '⤴️ برگشت به ' + '⚙️' + ' - ' + 'تنظیمات',
+        addTariff:'💎 ' + 'افزودن',
+        test: 'آزمایش',
     },
 
     btns_user: {
@@ -23,21 +25,35 @@ var mstr = {
         activation  : 'activate',
         category    : 'category',
         order       : 'order',
+        tariff      : 'tariff',
+    },
+    
+    query_tariff : {
+        name: 'name',
+        active: 'active',
+        price: 'price',
+        days: 'days',
+        download_per_day:'download_per_day',
     },
 
     sections: {
-
+        editTariff:'editTariff',
     },
 
     mess : {
-
+        addTariff:'لطفا نام تعرفه جدید را وارد کنید.',
+        editTariff:'لطفا مقدار مربوطه را وارد کنید.',
     },
 
     datas: {
-        // data: {
-        //     'name': '',
-        //     'mess': '',
-        // },
+        downloadlimit: {
+            'name':'محدودیت روزانه',
+            'mess':'لطفا تعداد محدودیت دانلود روزانه را ارسال کنید، عدد',
+        },
+        downloadlimitMess:{
+            'name':'پیام محدودیت',
+            'mess':'لطفا پیامی که در هنگام محدودیت به کاربر ارسال می شود را ارسال کنید.',
+        },
     }
 }
 
