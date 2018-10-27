@@ -1,4 +1,4 @@
-var name = 'tariff';
+let name = 'tariff';
 
 var checkRoute = function(option)
 {
@@ -76,7 +76,7 @@ async function create(name)
 
 async function choose(userid, name, mName)
 {
-    let tariff = await global.fn.db.tariff.findOne().exec().then();
+    let tariff = await global.fn.db.tariff.findOne({'name': name}).exec().then();
     if(!tariff) return;
   
     let detailArr = [];

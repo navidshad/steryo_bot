@@ -51,6 +51,10 @@ var routting = function(query, speratedQuery, user, mName)
         global.robot.bot.sendMessage(query.from.id, mess + `\n ${EdittingParameter}`, markup);
         fn.userOper.setSection(query.from.id, nSection, false);
     }
+    
+    // user
+    else if (speratedQuery[1] == queryTag['user'])
+        fn.m[mName].userView.query(query, speratedQuery, user, mName);
 }
 
 module.exports = { routting, checkQuery }

@@ -26,6 +26,7 @@ var mstr = {
         category    : 'category',
         order       : 'order',
         tariff      : 'tariff',
+        pey         : 'pey',
     },
     
     query_tariff : {
