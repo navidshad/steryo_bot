@@ -84,7 +84,7 @@ async function isUserLimitted(userid)
     return limited;
 }
 
-async addToLimitationCounter(userid)
+async function addToLimitationCounter(userid)
 {
     let Dstatistics = await getDailylimitation(userid);
     Dstatistics.todayCounter.counter += 1;
