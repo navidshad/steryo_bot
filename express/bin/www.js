@@ -4,7 +4,8 @@
  * Module dependencies.
  */
 
-var app = require('../app');
+var expressApp = require('../app');
+var app = require('vhostess')();
 var debug = require('debug')('robot-template:server');
 var http = require('http');
 
@@ -13,13 +14,14 @@ var http = require('http');
  */
 
 var port = normalizePort(process.env.PORT || global.config.serverport);
-app.set('port', port);
+//app.set('port', port);
 
 /**
  * Create HTTP server.
  */
 
 var server = http.createServer(app);
+app.use(`steryobot.ml`, expressApp);
 
 /**
  * Listen on provided port, on all network interfaces.

@@ -43,4 +43,10 @@ router.post('/nextpay', async (req, res, next) =>
     res.send('پرداخت با موفقیت انجام شد.');
 });
 
+router.get('/nextpay', async (req, res, next) =>
+{
+    console.log('a request to nextpay callback');
+    res.send('باید از درگاه بانکی به این صفحه منتقل شوید.');
+});
+
 module.exports = router;
