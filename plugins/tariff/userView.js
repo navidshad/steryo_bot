@@ -10,6 +10,14 @@ async function getDailylimitation(userid)
     let todayCounter = await fn.db.dailylimitation.findOne({'userid':userid, 'date': today}).exec().then();
     if(!todayCounter)
         todayCounter = await new fn.db.dailylimitation({'userid':userid, 'date': today}).save().then();
+        
+    // check userTariff
+    let userTariff = await getUserTariff(userid);
+    if(userTariff.expire)
+    {
+        let compareToday = Date.today().compareTo(userTariff.expire); // 1 = greater, -1 = less than, 0 = equal
+        if(compareToday <= 0) limitnumb = userTariff.download_per_day;
+    }
 
     return {'todayCounter': todayCounter, 'limit': limitnumb}
 }
