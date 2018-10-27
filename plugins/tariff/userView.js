@@ -22,7 +22,7 @@ async function getDailylimitation(userid)
     return {'todayCounter': todayCounter, 'limit': limitnumb}
 }
 
-async function showMessage(userid)
+async function showLimiteMessage(userid)
 {
     let limitMess = 'تعداد دانلود روزانه شما به اتمام رسیده است.';
     let limitMessOption = fn.getModuleData(name, 'downloadlimitMess');
@@ -61,11 +61,8 @@ async function isUserLimitted(userid)
     let Dstatistics = await getDailylimitation(userid);
     
     // if limitted show message
-    if(Dstatistics.todayCounter.counter >= Dstatistics.limit && version !== 'demo')
+    if(Dstatistics.todayCounter.counter >= Dstatistics.limit)
     {
-        console.log('user has been limited for today');
-        showMessage(userid);
-        
         //record limitation message state
         let isTodayLimited = await global.fn.db.limitationMessage
                                 .count({'userid' : userid, 'date': Date.today()}).exec().then();
@@ -180,7 +177,7 @@ async function showUserTariff(userid)
 module.exports = {
     isUserLimitted,
     addToLimitationCounter,
-    showMessage,
+    showLimiteMessage,
     query,
     showUserTariff,
 };

@@ -96,10 +96,15 @@ var show = async function(userid, chatid, returnedmedia, flag)
 
     //check daily limitation ---------------------------------------------
     let isLimited = await fn.m['tariff'].userView.isUserLimitted(userid);
-    if(isLimited) return;
+    
+    if(isLimited && version !== 'demo') {
+        //console.log('user has been limited for today');
+        fn.m['tariff'].userView.showLimiteMessage(userid);
+        return;
+    }
     
     // limitation counter
-    if(flag.version != 'demo') fn.m['tariff'].userView.addToLimitationCounter(userid);
+    if(version !== 'demo') fn.m['tariff'].userView.addToLimitationCounter(userid);
     // -------------------------------------------------------------------
 
     //send version
