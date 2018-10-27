@@ -21,11 +21,13 @@ var checkQuery = function(option)
     }
 
     //return
+    console.log('tariff checkQuery', result);
     return result;
 }
 
 var routting = function(query, speratedQuery, user, mName)
 {
+    console.log('tariff query routting');
     var last = speratedQuery.length-1;
     var queryTag = fn.mstr[mName].query;
     

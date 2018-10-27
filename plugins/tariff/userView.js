@@ -73,14 +73,14 @@ async function isUserLimitted(userid)
         limited = true;
     }
     
-    if(!limited)
-    {
-        //++counter
-        Dstatistics.todayCounter.counter += 1;
-        await Dstatistics.todayCounter.save().then();
-    }
-    
     return limited;
+}
+
+async addToLimitationCounter(userid)
+{
+    let Dstatistics = await getDailylimitation(userid);
+    Dstatistics.todayCounter.counter += 1;
+    await Dstatistics.todayCounter.save().then();
 }
 
 async function query(query, speratedQuery, user, mName)
@@ -116,12 +116,63 @@ async function query(query, speratedQuery, user, mName)
 global.fn.eventEmitter.on('affterSuccessPeyment', async (factor) => 
 {
     if(factor.products[0].type !== 'tariff') return;
-    
     console.log('tariff aded to user');
+    
+    let userid = factor.userid;
+    
+    // get tariff 
+    let tid = factor.products[0].id;
+    let tariff = await global.fn.db.tariff.findOne({'_id': tid}).exec().then();
+    
+    if(!tariff) global.fn.sendMessage(userid, 'تعرفه خریداری شده دیگر موجود نیست، لطفا با مدیر ربات تماس بگیرید.');
+    
+    // get user tariff
+    let userTariff = await getUserTariff(userid);
+    
+    // update user tariff
+    userTariff.expire           = Date.today().addDays(tariff.days);
+    userTariff.download_per_day = tariff.download_per_day;
+    userTariff.tariffName       = tariff.name;
+    await userTariff.save().then();
+    
+    // go to main menu
+    showUserTariff(userid);
 });
+
+async function getUserTariff(userid)
+{
+    let userTariff = await global.fn.db.userTariff.findOne({'userid': userid}).exec().then();
+    if(!userTariff) userTariff = await new global.fn.db.userTariff({'userid': userid}).save().then();
+    
+    return userTariff;
+}
+
+async function showUserTariff(userid)
+{
+    let subscriptionMess = 'از خرید شما سپاس گذار هستیم، تعرفه فعلی شما به شرح زیر است:';
+    let subscriptionMessOption = fn.getModuleData(name, 'subscriptionMess');
+    if(subscriptionMessOption.value) subscriptionMess = subscriptionMessOption.value;
+    
+    let userTariff = await getUserTariff(userid);
+    
+    if(userTariff.expire)
+    {
+        subscriptionMess += '\n\n' + `💎${userTariff.tariffName} | ${userTariff.download_per_day} دانلود در روز`;
+        subscriptionMess += '\n📆' + `تاریخ پایان: ${userTariff.expire.toString('M/d/yyyy')}`;
+        subscriptionMess += '\n📆' + `تاریخ امروز: ${Date.today().toString('M/d/yyyy')}`;
+        subscriptionMess += '\n .';
+    }
+    else {
+        subscriptionMess = 'شما هنوز هیچ اشتراکی خریداری نکرده اید.';
+    }
+
+    global.fn.sendMessage(userid, subscriptionMess);
+}
 
 module.exports = {
     isUserLimitted,
+    addToLimitationCounter,
     showMessage,
     query,
+    showUserTariff,
 };

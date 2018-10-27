@@ -95,32 +95,11 @@ var show = async function(userid, chatid, returnedmedia, flag)
     var markup = {'caption' : description, "reply_markup" : {"inline_keyboard" : detailArr}};
 
     //check daily limitation ---------------------------------------------
-    var Dstatistics = await getDailylimitation(userid);
-    if(Dstatistics.todayCounter.counter >= Dstatistics.limit && version !== 'demo')
-    {
-        console.log('user has been limited for today');
-        var limitMess = Dstatistics.limitMess + '\n';
-        limitMess = `محدودیت روزانه ${Dstatistics.limit} ترانه`;
-        global.fn.sendMessage(userid, Dstatistics.limitMess);
-        
-        //record limitation message state
-        let isTodayLimited = await global.fn.db.limitationMessage
-                                .count({'userid' : userid, 'date': Date.today()}).exec().then();
-                                
-        if(isTodayLimited < 1)
-        {
-            await new global.fn.db.limitationMessage({
-                'userid' : userid, 
-                'limitation': Dstatistics.limit,
-                }).save().then();
-        }
-
-        return;
-    }
-
-    //++counter
-    Dstatistics.todayCounter.counter += 1;
-    await Dstatistics.todayCounter.save().then();
+    let isLimited = await fn.m['tariff'].userView.isUserLimitted(userid);
+    if(isLimited) return;
+    
+    // limitation counter
+    if(flag.version != 'demo') fn.m['tariff'].userView.addToLimitationCounter(userid);
     // -------------------------------------------------------------------
 
     //send version

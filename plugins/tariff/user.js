@@ -44,7 +44,8 @@ var routting = function(message, speratedSection, user, mName)
     var userid = message.from.id;
     
     //
-    if (message.text === btns['']){}
+    if (message.text === btns['viewTariff'])
+        fn.m[mName].userView.showUserTariff(userid);
 
 }
 

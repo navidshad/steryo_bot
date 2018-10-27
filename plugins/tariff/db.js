@@ -12,7 +12,8 @@ let tariffSchema = new Schema({
 let userTariffShema = new Schema({
   userid: Number,
   expire: Date,
-  download_per_day: Number
+  download_per_day: Number,
+  tariffName: String
 });
 
 module.exports.tariff = mongoose.model('tariffs', tariffSchema);
