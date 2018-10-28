@@ -33,7 +33,7 @@ var checkRoute = function(option)
 }
 
 var getButtons = function (mName){
-    var buttons  = fn.convertObjectToArray(fn.mstr[mName].btns_user,{});
+    let buttons  = fn.convertObjectToArray(fn.mstr[mName].btns_user,{});
     return buttons;
 }
 

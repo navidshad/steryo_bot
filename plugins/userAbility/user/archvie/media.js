@@ -64,7 +64,7 @@ var getview_main = function(liked, versions, mediaid, option={})
 var show = async function(userid, chatid, returnedmedia, flag)
 {
     console.log('show media');
-    var liked = returnedmedia.liked;
+    var liked = (returnedmedia.liked) ? returnedmedia.liked : false;
     var media = returnedmedia.media;
 
     //create callback keyboard

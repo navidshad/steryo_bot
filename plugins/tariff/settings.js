@@ -63,8 +63,8 @@ let show = function(userid, mName, newcat)
     //defin new category
     if(newcat) {
         moduleOption.option.category = newcat;
-        let buttons = fn.mstr[mName].btns_user;
-        if(buttons) moduleOption.option.buttons = Object.values(buttons);
+        //let buttons = fn.mstr[mName].btns_user;
+        //if(buttons) moduleOption.option.buttons = Object.values(buttons);
         global.robot.config.moduleOptions[moduleOption.index] = moduleOption.option;
         //save configuration
         global.robot.save();

@@ -131,7 +131,7 @@ var routting = async function(message, speratedSection, user, mName)
     
     //test tariffs
     else if(text === fn.mstr[name].btns['test'])
-        userView.showMessage(userid);
+        userView.showLimiteMessage(userid);
     
     // tarif
     //add a tariff

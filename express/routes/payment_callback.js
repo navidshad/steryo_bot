@@ -27,9 +27,9 @@ router.post('/nextpay', async (req, res, next) =>
 
     //validate purchase
     var validate = await global.fn.m.commerce.gates.nextpay
-    .VerifyPayment(body.trans_id, body.order_id, nextpaySession.amount, nextpayapikey);
-    console.log('validate', validate);
-    var code = validate.PaymentVerificationResult.code; 
+        .VerifyPayment(body.trans_id, body.order_id, nextpaySession.amount, nextpayapikey);
+    //console.log('validate', validate);
+    var code = validate[0].PaymentVerificationResult.code; 
 
     //not purched
     if(code !== 0){

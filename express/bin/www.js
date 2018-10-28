@@ -22,6 +22,11 @@ var port = normalizePort(process.env.PORT || global.config.serverport);
 
 var server = http.createServer(app);
 app.use(`steryobot.ml`, expressApp);
+app.use(function (req, res) {
+  res.statusCode = 404
+  res.setHeader('Content-Type', 'text/plain; charset=utf-8')
+  res.end('subdomain needed')
+});
 
 /**
  * Listen on provided port, on all network interfaces.

@@ -21,7 +21,6 @@ var checkQuery = function(option)
     }
 
     //return
-    console.log('tariff checkQuery', result);
     return result;
 }
 
