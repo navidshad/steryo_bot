@@ -219,7 +219,7 @@ let showFactor = async function(userid,  option)
         
         let testpeymentBtn = {'text': 'پرداخت آزمایشی', 'callback_data': fn_getpaid};
         let deleteBtn = {'text': '❌', 'callback_data': fn_delete};
-        let refreshBtn = {'text': '🔄', 'callback_data': fn_refresh};
+        let refreshBtn = {'text': '🔄 ریست لینک', 'callback_data': fn_refresh};
         let firstRow = [deleteBtn, refreshBtn];
 
         let testpaymentOption = fn.getModuleData('commerce', 'testpayment');
