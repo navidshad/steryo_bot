@@ -10,7 +10,7 @@ var sendPlayListTouser = function(userid, playlist)
     //medias
     playlist.list.forEach(element => {
         fn_ = queryTag['userAbility'] + '-' + queryTag['user'] + '-' + queryTag['playlist'] + '-' + queryTag['showmedia'] + '-' + element._id;
-        text = `${element.albumartist}: ${element.title}`;
+        text = `${element.albumartist}: ${element.titleIndex.ku_so}`;
         detailArr.push([{'text': text, 'callback_data': fn_}]);
     });
 

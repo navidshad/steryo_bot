@@ -18,6 +18,8 @@ async function getDailylimitation(userid)
         let compareToday = Date.today().compareTo(userTariff.expire); // 1 = greater, -1 = less than, 0 = equal
         if(compareToday <= 0) limitnumb = userTariff.download_per_day;
     }
+    
+    console.log(userid, 'limitnumb:', limitnumb, 'todayCounter:', todayCounter.counter);
 
     return {'todayCounter': todayCounter, 'limit': limitnumb}
 }

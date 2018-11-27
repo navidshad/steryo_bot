@@ -1,21 +1,23 @@
-var getDailylimitation = async function(userid)
-{
-    var today = Date.today();
-    var limitnumb = 20;
-    var limitMess = 'تعداد دانلود روزانه شما به اتمام رسیده است.'
+// var getDailylimitation = async function(userid)
+// {
+//     var today = Date.today();
+//     var limitnumb = 20;
+//     var limitMess = 'تعداد دانلود روزانه شما به اتمام رسیده است.'
 
-    var limitOption = fn.getModuleData('userAbility', 'downloadlimit');
-    var limitMessOption = fn.getModuleData('userAbility', 'downloadlimitMess');
+//     var limitOption = fn.getModuleData('userAbility', 'downloadlimit');
+//     var limitMessOption = fn.getModuleData('userAbility', 'downloadlimitMess');
 
-    if(limitOption && !isNaN(parseInt(limitOption.value))) limitnumb = parseInt(limitOption.value);
-    if(limitMessOption.value) limitMess = limitMessOption.value;
+//     if(limitOption && !isNaN(parseInt(limitOption.value))) limitnumb = parseInt(limitOption.value);
+//     if(limitMessOption.value) limitMess = limitMessOption.value;
+    
+//     console.log('limitnumb:', limitnumb);
 
-    var todayCounter = await fn.db.dailylimitation.findOne({'userid':userid, 'date': today}).exec().then();
-    if(!todayCounter)
-        todayCounter = await new fn.db.dailylimitation({'userid':userid, 'date': today}).save().then();
+//     var todayCounter = await fn.db.dailylimitation.findOne({'userid':userid, 'date': today}).exec().then();
+//     if(!todayCounter)
+//         todayCounter = await new fn.db.dailylimitation({'userid':userid, 'date': today}).save().then();
 
-    return {'todayCounter': todayCounter, 'limit': limitnumb, 'limitMess': limitMess}
-}
+//     return {'todayCounter': todayCounter, 'limit': limitnumb, 'limitMess': limitMess}
+// }
 
 var showbyid = async function(userid, chatid, id, flag)
 {
@@ -74,9 +76,22 @@ var show = async function(userid, chatid, returnedmedia, flag)
     //var fn_back     = queryTag['userAbility'] + '-' + queryTag['user'] + '-' + queryTag['media'] + '-' + queryTag['back'] + '-' + media._id;
 
     //description
-    var description = '\n @' +  global.robot.username;
-    var capdata = fn.getModuleData('userAbility','musicCaption');
-    if(capdata.value) description = capdata.value;
+    let description = '\n @' +  global.robot.username;
+    
+    // get copy right
+    let copyRight = fn.getModuleData('userAbility','musicCaption');
+    if(copyRight.value) copyRight = copyRight.value;
+    
+    // get media detail
+    let mediaDetail = `🎼 ${media['title']}\n🎤 ${media['albumartist']}\n\n\n`;
+    
+    // combine caption
+    let combineLength = mediaDetail.length + copyRight.length;
+    
+    if(combineLength >= 1024) description = mediaDetail;
+    else {
+        description = mediaDetail + copyRight;    
+    }
 
     // version -----------------------------------------------------------
     var version = (flag.version) ? flag.version : 'demo';
