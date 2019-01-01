@@ -24,6 +24,12 @@ async function getDailylimitation(userid)
     return {'todayCounter': todayCounter, 'limit': limitnumb}
 }
 
+async function getTariffs()
+{
+    let tariffs = await fn.db.tariff.find({'active': true}).sort({'days':1}).exec().then();
+    return tariffs;
+}
+
 async function showLimiteMessage(userid)
 {
     let limitMess = 'تعداد دانلود روزانه شما به اتمام رسیده است.';
@@ -35,7 +41,7 @@ async function showLimiteMessage(userid)
     console.log(name);
     let qt = fn.mstr[name].query;
     
-    let tariffs = await fn.db.tariff.find({'active': true}).sort({'days':1}).exec().then();
+    let tariffs = await getTariffs();
     
     if(tariffs.length) limitMess += '\n\n' + '💎 تعرفه ها' + '\n';
     
@@ -90,6 +96,12 @@ async function addToLimitationCounter(userid)
     await Dstatistics.todayCounter.save().then();
 }
 
+async function createTariffFactor(userid, detail)
+{
+    let factor = await fn.m.commerce.user.factor.create(userid, [detail]);
+    return factor;
+}
+
 async function query(query, speratedQuery, user, mName)
 {
     let last = speratedQuery.length-1;
@@ -116,7 +128,7 @@ async function query(query, speratedQuery, user, mName)
             'price' :tarriff.price,
         }
         
-        fn.m.commerce.user.factor.create(userid, [product]);
+        createTariffFactor(userid, product);
     }
 }
 
@@ -182,4 +194,6 @@ module.exports = {
     showLimiteMessage,
     query,
     showUserTariff,
+    getTariffs,
+    createTariffFactor,
 };

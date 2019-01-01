@@ -108,7 +108,7 @@ let create = async function(userid,  items, optionPram)
     //mess += (shippingOption == 'true') ? shippingLable : '';
 
     //create
-    let newFactor = new fn.db.factor({
+    let newFactor = await new fn.db.factor({
         'number'    : newNumber,
         'userid'    : userid,
         'date'      : fn.time.gettime(),
@@ -116,11 +116,14 @@ let create = async function(userid,  items, optionPram)
         'products'  : updatedBagitems,
         'amount'    : totalAmount,
         'discount'  : totalPerDis,
-    }).save((e, factor) => {
-        if(e) console.log(e);
-        fn.m.commerce.user.bag.clear(userid);
-        showFactor(userid,  {'factor': factor});
-    });
+    }).save().then();
+    
+    fn.m.commerce.user.bag.clear(userid);
+    
+    if(option.show == false) {}
+    else showFactor(userid,  {'factor': newFactor});
+    
+    return newFactor;
 }
 
 let getPaied = async function(userid,  fid)

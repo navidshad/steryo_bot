@@ -140,4 +140,14 @@ global.fn.eventEmitter.on('nothingtoroute', (message, speratedSection, user) =>
 
     if(states['search'] && states['search'].key)  search.routting(message, speratedSection, user);
 });
+
+// get userid
+global.fn.eventEmitter.on('commands', (message, speratedSection, user) =>
+{
+    if(message.text != '/userid') return;
+    let newmsg = `🆔 ${message.from.id}`;
+    
+    global.fn.sendMessage(message.from.id, newmsg);
+});
+
 module.exports = { routting, checkRoute, getButtons, query, singers, search, media, playlist } 

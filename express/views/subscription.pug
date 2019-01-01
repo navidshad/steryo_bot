@@ -1,0 +1,25 @@
+extends layout
+
+block content
+
+  div.flex-center
+    div.block.w3-mobile
+    
+      div(class="w3-container")
+        img.w3-image(src='/img/logo.png')
+        
+      div(class="w3-container")
+        .text.space
+          h2
+          | خرید اشتراک از رسانه موسیقی ملودیکو
+          p
+          |لطفا اشتراک مورد نظر خود را انتخاب کنید و در صفحه پرداخت مشخصات خواسته شده را وارد کنید. پس از پرداخت به صورت اتوماتیک اشتراک برای شما ثبت خواهد شد.
+        
+        .space
+          input#userid.w3-input.w3-border.space(name="text", placeholder='شماره کاربری')
+          
+          select#tariff.w3-select.w3-border.space(name="tarrif")
+            each tariff in subscriptions
+              option(id=tariff._id value=tariff._id tname=tariff.name price=tariff.price)=tariff.name + ' ' + tariff.price + ' تومان'
+              
+          button#pay.space(class="w3-button w3-round-large w3-border w3-red w3-block") خرید
