@@ -15,8 +15,6 @@ function submitPayment(e)
   
   let form = { 'userid': userid, 'tariffName': tname, 'tariffid': tariffid, 'price':price };
   
-  console.log(form);
-  
   $.post('/but_ariff', form, onReturnAnswer);
 }
 

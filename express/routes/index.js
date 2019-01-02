@@ -19,7 +19,9 @@ router.post('/but_ariff', async (req, res, next) =>
 {
   let result = {};
   let body = req.body;
-  let userid = body.userid; 
+  
+  let userid = parseInt(body.userid);
+  if(isNaN(userid)) userid = 0;
   
   console.log(body);
   
