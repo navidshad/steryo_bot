@@ -5,7 +5,7 @@ function getHomePlayLists()
     let list = [];
 
     let homePlaylistsOption = fn.getModuleOption('homePlaylists', {create: true});
-    homePlaylistsOption.option.datas.forEach(playlist => {
+    homePlaylistsOption.option.datas.reverse().forEach(playlist => {
         if(playlist.key) list.push(playlist);
     })
 
@@ -55,7 +55,9 @@ var showplaylist = function(userid, playlist)
     var fn_delete   = qTag['archiveMusic'] + '-' + qTag['admin'] + '-' + qTag['a_playlist'] + '-' + qTag['delete'] + '-' + playlist.id;
     var fn_link     = qTag['archiveMusic'] + '-' + qTag['admin'] + '-' + qTag['a_playlist'] + '-' + qTag['link'] + '-' + playlist.id;
     var fn_settoHome= qTag['archiveMusic'] + '-' + qTag['admin'] + '-' + qTag['a_playlist'] + '-' + qTag['settoHome'] + '-' + playlist.id;
-
+    
+    console.log(fn_name, '\n', fn_close, '\n', fn_reload, '\n', fn_delete, '\n', fn_link, '\n', fn_settoHome);
+    
     // set to home
     let sth = 'صفحه اصلی';
     let setToHomeData = fn.getModuleData(homePlaylists, playlist.name);
@@ -76,9 +78,9 @@ var showplaylist = function(userid, playlist)
     ]);
 
     //medias
-    playlist.list.forEach(element => {
+    playlist.list.forEach((element, i) => {
         var fn_show = qTag['archiveMusic'] + '-' + qTag['admin'] + '-' + qTag['a_playlist'] + '-' + qTag['showmedia'] + '-' + element._id;
-        var fn_deleteSong = qTag['archiveMusic'] + '-' + qTag['admin'] + '-' + qTag['a_playlist'] + '-' + qTag['deletefromlist'] + '-' + playlist.id + '-' + element._id;
+        var fn_deleteSong = qTag['archiveMusic'] + '-' + qTag['admin'] + '-' + qTag['a_playlist'] + '-' + qTag['deletefromlist'] + '-' + playlist.id + '-' + i;
         var tx_title = element.title;
         detailArr.push([
             {'text': tx_title, 'callback_data': fn_show},
@@ -202,8 +204,11 @@ var query = async function(query, speratedQuery)
     else if (speratedQuery[3] === qTag['deletefromlist'])
     {
         close(query);
-        var mediaid = speratedQuery[last];
+        var mediaIndex = speratedQuery[last];
         var listid  = speratedQuery[last-1];
+        
+        var playlist = await fn.api.getplaylistByid(id);
+        var mediaid = playlist.list[mediaIndex]._id;
         var result = await fn.api.getmediabyid(mediaid).then();
         var media = result.media;
 
@@ -244,14 +249,28 @@ var query = async function(query, speratedQuery)
         let pl = await fn.api.getplaylistByid(id);
 
         let name = pl.name;
-        let setToHomeData = fn.getModuleData(homePlaylists, name);
-        setToHomeData.key = !setToHomeData.key;
-        setToHomeData.name = name;
-        setToHomeData.value = id;
+        setToHome(name, id, 1);
+        // let setToHomeData = fn.getModuleData(homePlaylists, name);
+        // setToHomeData.key = !setToHomeData.key;
+        // setToHomeData.name = name;
+        // setToHomeData.value = id;
+        // setToHomeData.more = [1];
 
-        fn.putDatasToModuleOption(homePlaylists, [setToHomeData]);
+        // fn.putDatasToModuleOption(homePlaylists, [setToHomeData]);
         showplaylist(query.from.id, pl);
     }
+}
+
+function setToHome(name, id, order)
+{
+    let setToHomeData = fn.getModuleData(homePlaylists, name);
+    
+    setToHomeData.key = !setToHomeData.key;
+    setToHomeData.name = name || setToHomeData.name;
+    setToHomeData.value = id || setToHomeData.value;
+    setToHomeData.more = [order];
+
+    fn.putDatasToModuleOption(homePlaylists, [setToHomeData]);
 }
 
 module.exports = { routting, query, getHomePlayLists }

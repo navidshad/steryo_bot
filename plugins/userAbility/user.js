@@ -53,7 +53,8 @@ var getprivilegeStatus = function(moduleOption){
     return states;
 }
 
-var getButtons = function (){
+var getButtons = function ()
+{
     var buttons = [];
     var mName = fn.mstr.userAbility['modulename'];
     var userAbilityModuleOption = fn.getModuleOption(mName, {'create':true, 'setting': {'name':mName, 'btn_order':1, 'datas':[], 'active': true, 'category': fn.mstr.category['maincategory']}}).option;

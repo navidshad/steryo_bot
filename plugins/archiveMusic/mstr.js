@@ -24,27 +24,27 @@ module.exports.archiveMusic = {
     },
     
     qu : {
-        archiveMusic: 'am',
+        archiveMusic: 'archiveMusic',
         admin:'a',
-        u_album : 'al',
-        u_media : 'md',
-        a_album : 'al',  //admin 
-        a_media : 'amdi',  //admin section
-        a_playlist  :'pls',
-        showmedia   :'showmedia',
-        getallmedia :'getallmedia',
-        delete  : 'del',
-        deletefromlist  :'deft',
-        edit    : 'edit',
-        reload  : 'reload',
-        close   : 'close',
-        addtoplaylist : 'addtplyls',
-        name    : 'name',
-        chooseplaylist : 'cpls',
-        back : 'back',
-        like :'like',
-        link:'lnk',
-        settoHome: 'sHome',
+        u_album : 'ua',
+        u_media : 'um',
+        a_album : 'aa',  //admin 
+        a_media : 'am',  //admin section
+        a_playlist  :'al',
+        showmedia   :'sm',
+        getallmedia :'al',
+        delete  : 'd',
+        deletefromlist  :'dl',
+        edit    : 'et',
+        reload  : 'rd',
+        close   : 'cls',
+        addtoplaylist : 'atp',
+        name    : 'nm',
+        chooseplaylist : 'cpl',
+        back : 'bck',
+        like :'lk',
+        link:'lk',
+        settoHome: 'sH',
     },
 
     mess : {
