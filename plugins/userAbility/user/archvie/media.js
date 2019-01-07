@@ -1,24 +1,3 @@
-// var getDailylimitation = async function(userid)
-// {
-//     var today = Date.today();
-//     var limitnumb = 20;
-//     var limitMess = 'تعداد دانلود روزانه شما به اتمام رسیده است.'
-
-//     var limitOption = fn.getModuleData('userAbility', 'downloadlimit');
-//     var limitMessOption = fn.getModuleData('userAbility', 'downloadlimitMess');
-
-//     if(limitOption && !isNaN(parseInt(limitOption.value))) limitnumb = parseInt(limitOption.value);
-//     if(limitMessOption.value) limitMess = limitMessOption.value;
-    
-//     console.log('limitnumb:', limitnumb);
-
-//     var todayCounter = await fn.db.dailylimitation.findOne({'userid':userid, 'date': today}).exec().then();
-//     if(!todayCounter)
-//         todayCounter = await new fn.db.dailylimitation({'userid':userid, 'date': today}).save().then();
-
-//     return {'todayCounter': todayCounter, 'limit': limitnumb, 'limitMess': limitMess}
-// }
-
 var showbyid = async function(userid, chatid, id, flag)
 {
     var result = await fn.api.getmediabyid(id, userid).then();
@@ -134,6 +113,7 @@ var show = async function(userid, chatid, returnedmedia, flag)
         'title' : media.title,
         'artist': media.albumartist,
         'date'  : today,
+        'version': version,
     }).save();
 }
 

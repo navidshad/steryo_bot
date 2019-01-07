@@ -19,6 +19,7 @@ var mediaSearchSchema = new Schema({
   title: String,
   artist: String,
   date: Date,
+  version: String,
 })
 
 var mediaSchema = new Schema({
