@@ -34,8 +34,8 @@ var sendPlayListTouser = function(userid, playlist)
     
     
     // analytic
-    let pageName = 'playlist';
-    let label =  playlist.nam;
+    let pageName = playlist.name;
+    let label = 'playlist';
     fn.m.analytic.trackPage(userid, pageName, label);
 }
 
@@ -64,6 +64,12 @@ var getallmedia = function(query, id){
             const item = playlist.list[index];
             await media.showbyid(query.from.id, query.message.chat.id, item._id, {'mode':'main'});
         }
+        
+        // analytic
+        let eventCategory = 'playlist';
+        let eventAction = 'download all songs';
+        let eventLabel = playlist.nam;
+        fn.m.analytic.trackEvent(query.from.id, eventCategory, eventAction, eventLabel);
     });
 }
 

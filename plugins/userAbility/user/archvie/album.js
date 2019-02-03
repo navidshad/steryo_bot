@@ -31,6 +31,11 @@ var sendAlbumTouser = function(userid, album)
     '⏺ ' + 'تراک: ' + album.medias.length + '\n' + '💽';
     var markup = {"reply_markup" : {"inline_keyboard" : detailArr}};
     global.fn.sendMessage(userid, text, markup);
+    
+    // analytic
+    let pageName = album.name;
+    let label = 'album';
+    fn.m.analytic.trackPage(userid, pageName, label);
 }
 
 var showalbum = async function(userid, name, singer){
@@ -66,13 +71,20 @@ var deletealbum = function(query, id){
     });
 }
 
-var getallmedia = function(query, id){
+var getallmedia = function(query, id)
+{
     fn.api.getalbumbyid(id, async (album) => 
     {
         for (let index = 0; index < album.medias.length; index++) {
             const item = album.medias[index];
             await media.show(query.from.id, query.message.chat.id, item, {'mode':'main'});
         }
+        
+        // analytic
+        let eventCategory = 'album';
+        let eventAction = 'download all songs';
+        let eventLabel = album.name;
+        fn.m.analytic.trackEvent(query.from.id, eventCategory, eventAction, eventLabel);
     });
 }
 
@@ -88,7 +100,6 @@ var query = function(query, speratedQuery, user)
     else if(speratedQuery[3] === queryTag['showmedia']) media.showbyid(query.from.id, query.message.chat.id, speratedQuery[last], {'mode':'main'});
     //get all media
     else if (speratedQuery[3] === queryTag['getallmedia']) getallmedia(query, speratedQuery[last]);
-
 }
 
 module.exports = { showalbum, media, query, showById }

@@ -21,12 +21,16 @@ module.exports = function()
         // extract command
         var param = text.replace('/start ', '');
 
+        let eventAction = '';
+        
         // playlist
         if(param.startsWith(startParam_playlist))
         {
             console.log(`commands, begin to playlist`);
             var playlistID = param.split('-')[1];
             global.fn.m.userAbility.user.playlist.showById(userid, playlistID);
+            
+            eventAction = 'playlist';
         }
 
         // album
@@ -35,6 +39,8 @@ module.exports = function()
             console.log(`commands, begin to album`);
             var albumid = param.split('-')[1];
             global.fn.m.userAbility.user.singers.album.showById(userid, albumid);
+            
+            eventAction = 'album';
         }
 				
 		// media
@@ -44,6 +50,8 @@ module.exports = function()
             var mediaid = param.split('-')[1];
 			var chatid = message.chat.id;
             global.fn.m.userAbility.user.singers.album.media.showbyid(userid, chatid, mediaid, {'mode':'main'});
+            
+            eventAction = 'song';
         }
 			
 		// search
@@ -59,6 +67,13 @@ module.exports = function()
             }
             
             global.fn.m.userAbility.user.search.search(userid, word, user);
+            
+            eventAction = 'search';
         }
+        
+        // analytic
+        let eventCategory = 'backlink';
+        let eventOptions = {'dr': param};
+        fn.m.analytic.trackEvent(userid, eventCategory, eventAction, null, eventOptions);
     });
 }

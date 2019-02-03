@@ -118,8 +118,8 @@ var show = async function(userid, chatid, returnedmedia, flag)
     }).save();
     
     // analytic
-    let eventCategory = 'download song';
-    let eventAction = version;
+    let eventCategory = 'media';
+    let eventAction = `download song | ${version}`;
     let eventLabel = media.title;
     fn.m.analytic.trackEvent(userid, eventCategory, eventAction, eventLabel);
 }
