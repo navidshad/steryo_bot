@@ -89,9 +89,9 @@ var show = async function(userid, chatid, returnedmedia, flag)
     var markup = {'caption' : description, "reply_markup" : {"inline_keyboard" : detailArr}};
 
     //check daily limitation ---------------------------------------------
-    let isLimited = await fn.m['tariff'].userView.isUserLimitted(userid);
+    let limitation = await fn.m['tariff'].userView.isUserLimitted(userid);
     
-    if(isLimited && version !== 'demo') {
+    if(limitation.limited && version !== 'demo') {
         //console.log('user has been limited for today');
         fn.m['tariff'].userView.showLimiteMessage(userid);
         return;
@@ -114,7 +114,14 @@ var show = async function(userid, chatid, returnedmedia, flag)
         'artist': media.albumartist,
         'date'  : today,
         'version': version,
+        'limitation_remaine': limitation.limit.toString() + '-' + limitation.todayCounter.counter.toString(),
     }).save();
+    
+    // analytic
+    let eventCategory = 'download song';
+    let eventAction = version;
+    let eventLabel = media.title;
+    fn.m.analytic.trackEvent(userid, eventCategory, eventAction, eventLabel);
 }
 
 var close = function(query)

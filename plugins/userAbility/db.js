@@ -20,6 +20,7 @@ var mediaSearchSchema = new Schema({
   artist: String,
   date: Date,
   version: String,
+  limitation_remaine: String
 })
 
 var mediaSchema = new Schema({

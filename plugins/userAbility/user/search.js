@@ -8,6 +8,13 @@ var saveSearch = function(userid, word, count)
         'date': today,
         'count': count,
     }).save();
+    
+    // analytic
+    let eventCategory = 'search';
+    let eventAction = 'media';
+    let eventLabel = word;
+    let eventValue = count;
+    fn.m.analytic.trackEvent(userid, eventCategory, eventAction, eventLabel, eventValue);
 }
 
 var showResult_keyboard = function(userid, result, mess)

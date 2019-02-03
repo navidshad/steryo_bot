@@ -38,7 +38,7 @@ async function showLimiteMessage(userid)
     
     // tariffs ------------------------
     let detailArr = [];
-    console.log(name);
+    //console.log(name);
     let qt = fn.mstr[name].query;
     
     let tariffs = await getTariffs();
@@ -86,7 +86,8 @@ async function isUserLimitted(userid)
         limited = true;
     }
     
-    return limited;
+    Dstatistics.limited= limited;
+    return Dstatistics;
 }
 
 async function addToLimitationCounter(userid)

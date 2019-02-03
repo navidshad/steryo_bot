@@ -46,7 +46,11 @@ var show = async function(userid, page=1, mode='new', option={})
     
     if(mode == 'new') global.fn.sendMessage(userid, text, markup);
     else if(mode == 'edit') global.robot.bot.editMessageReplyMarkup({"inline_keyboard" : detailArr}, option);
-
+    
+    // analytic
+    let pageName = 'favorites';
+    let label = userid;
+    fn.m.analytic.trackPage(userid, pageName, label);
 }
 
 var close = function(query){

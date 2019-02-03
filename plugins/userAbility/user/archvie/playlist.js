@@ -31,6 +31,12 @@ var sendPlayListTouser = function(userid, playlist)
     '⏺ ' + 'تراک: ' + playlist.list.length + '\n' + '💽';
     var markup = {"reply_markup" : {"inline_keyboard" : detailArr}};
     global.fn.sendMessage(userid, text, markup);
+    
+    
+    // analytic
+    let pageName = 'playlist';
+    let label =  playlist.nam;
+    fn.m.analytic.trackPage(userid, pageName, label);
 }
 
 var showplaylist = async function(userid, name)
