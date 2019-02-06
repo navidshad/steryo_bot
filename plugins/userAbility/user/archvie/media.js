@@ -91,9 +91,13 @@ var show = async function(userid, chatid, returnedmedia, flag)
     //check daily limitation ---------------------------------------------
     let limitation = await fn.m['tariff'].userView.isUserLimitted(userid);
     
-    if(limitation.limited && version !== 'demo') {
+    if(limitation.limited && version !== 'demo') 
+    {
         //console.log('user has been limited for today');
         fn.m['tariff'].userView.showLimiteMessage(userid);
+        
+        fn.m.analytic.trackEvent(userid, 'media', 'shown limitation', media.title);
+        
         return;
     }
     
