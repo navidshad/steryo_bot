@@ -95,9 +95,6 @@ var show = async function(userid, chatid, returnedmedia, flag)
     {
         //console.log('user has been limited for today');
         fn.m['tariff'].userView.showLimiteMessage(userid);
-        
-        fn.m.analytic.trackEvent(userid, 'media', 'shown limitation', media.title);
-        
         return;
     }
     

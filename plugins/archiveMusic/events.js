@@ -21,7 +21,7 @@ module.exports = function()
         // extract command
         var param = text.replace('/start ', '');
 
-        let eventAction = '';
+        let eventLable = '';
         
         // playlist
         if(param.startsWith(startParam_playlist))
@@ -30,7 +30,7 @@ module.exports = function()
             var playlistID = param.split('-')[1];
             global.fn.m.userAbility.user.playlist.showById(userid, playlistID);
             
-            eventAction = 'playlist';
+            eventLable = `playlist | ${playlistID}`;
         }
 
         // album
@@ -40,7 +40,7 @@ module.exports = function()
             var albumid = param.split('-')[1];
             global.fn.m.userAbility.user.singers.album.showById(userid, albumid);
             
-            eventAction = 'album';
+            eventLable = `album | ${albumid}`;
         }
 				
 		// media
@@ -51,7 +51,7 @@ module.exports = function()
 			var chatid = message.chat.id;
             global.fn.m.userAbility.user.singers.album.media.showbyid(userid, chatid, mediaid, {'mode':'main'});
             
-            eventAction = 'song';
+            eventLable = `media | ${mediaid}`;
         }
 			
 		// search
@@ -68,12 +68,13 @@ module.exports = function()
             
             global.fn.m.userAbility.user.search.search(userid, word, user);
             
-            eventAction = 'search';
+            eventLable = `search | ${word}`;
         }
         
         // analytic
         let eventCategory = 'backlink';
-        let eventOptions = {'dr': param};
-        fn.m.analytic.trackEvent(userid, eventCategory, eventAction, null, eventOptions);
+        let eventAction = 'open a section';
+        //let eventOptions = {'dr': param};
+        fn.m.analytic.trackEvent(userid, eventCategory, eventAction, eventLable);
     });
 }

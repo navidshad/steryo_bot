@@ -61,6 +61,11 @@ async function showLimiteMessage(userid)
 
     let messOption = {"reply_markup" : {"inline_keyboard" : detailArr}};
     global.fn.sendMessage(userid, limitMess, messOption);
+    
+    // analytic
+    let pageName = 'limitation';
+    let label = 'tariff';
+    fn.m.analytic.trackPage(userid, pageName, label);
 }
 
 async function isUserLimitted(userid)
@@ -187,6 +192,11 @@ async function showUserTariff(userid)
     }
 
     global.fn.sendMessage(userid, subscriptionMess);
+    
+    // analytic
+    let pageName = '💎اشتراک من';
+    let label = 'tariff';
+    fn.m.analytic.trackPage(userid, pageName, label);
 }
 
 module.exports = {
