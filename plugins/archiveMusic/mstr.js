@@ -1,5 +1,5 @@
-module.exports.archiveMusic = {
-    modulename  : 'archiveMusic',
+module.exports.arc = {
+    modulename  : 'arc',
     name        : '🎙 ' + 'آرشیو موسیقی', 
     back        : '🎙 ' + 'آرشیو موسیقی' + ' ⬅️',
 
@@ -24,7 +24,7 @@ module.exports.archiveMusic = {
     },
     
     qu : {
-        archiveMusic: 'archiveMusic',
+        arc: 'arc',
         admin:'a',
         u_album : 'ua',
         u_media : 'um',

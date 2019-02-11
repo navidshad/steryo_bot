@@ -42,7 +42,7 @@ var routting = function(message, speratedSection, user){
     var text = message.text;
     
     //go Archive view
-    if(text === fn.mstr.archiveMusic.menu['archive'].lable || text === fn.mstr.archiveMusic.btns['singers'].back || speratedSection[1] === fn.mstr.archiveMusic.section.s) 
+    if(text === fn.mstr.arc.menu['archive'].lable || text === fn.mstr.arc.btns['singers'].back || speratedSection[1] === fn.mstr.arc.section.s) 
         archive.routting(message, speratedSection);
 }
 

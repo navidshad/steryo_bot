@@ -1,7 +1,7 @@
 var checkUpload = function(option){
 
     var btnsArr  = [ 
-        fn.mstr.archiveMusic.btns['addmusic'],
+        fn.mstr.arc.btns['addmusic'],
     ];
 
     var result = {}
@@ -35,9 +35,9 @@ var checkUpload = function(option){
 
 var addmode = function(message){
     console.log('music add mode');
-    fn.userOper.setSection(message.from.id, fn.mstr.archiveMusic.btns['addmusic'], true);
-    var remarkup = fn.generateKeyboard({section:fn.mstr.archiveMusic['back']}, true);
-    global.fn.sendMessage(message.from.id, fn.mstr.archiveMusic.btns['addmusic'], remarkup);
+    fn.userOper.setSection(message.from.id, fn.mstr.arc.btns['addmusic'], true);
+    var remarkup = fn.generateKeyboard({section:fn.mstr.arc['back']}, true);
+    global.fn.sendMessage(message.from.id, fn.mstr.arc.btns['addmusic'], remarkup);
 }
 
 var storefile = function(message, speratedSection){
@@ -111,12 +111,12 @@ var sendSavedMediaDetailToUser = function(body, detail, userid)
     mess += '\n' + '<code>' + '🆔' + '</code>' + detail.telegramid;
     
     // link
-    var startParam = `${fn.mstr.archiveMusic.linkRoutes.media}-${detail._id}`;
+    var startParam = `${fn.mstr.arc.linkRoutes.media}-${detail._id}`;
     var link = fn.getStartLink(startParam);
     mess += '\n\n' + '🌐 ' + link;
 
-    fn.userOper.setSection(userid, fn.mstr.archiveMusic.btns['addmusic'], true);
-    var remarkup = fn.generateKeyboard({section:fn.mstr.archiveMusic['back']}, true);
+    fn.userOper.setSection(userid, fn.mstr.arc.btns['addmusic'], true);
+    var remarkup = fn.generateKeyboard({section:fn.mstr.arc['back']}, true);
     remarkup.parse_mode = 'HTML';
 
     global.fn.sendMessage(userid, mess, remarkup);
@@ -126,7 +126,7 @@ var routting = function(message, speratedSection){
     var last = speratedSection.length-1;
 
     //upload mode
-    if(speratedSection[last] === fn.mstr.archiveMusic.btns['addmusic'])
+    if(speratedSection[last] === fn.mstr.arc.btns['addmusic'])
         storefile(message, speratedSection);
 }
 

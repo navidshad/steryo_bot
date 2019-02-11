@@ -31,7 +31,7 @@ var showResult_keyboard = function(userid, result, mess)
     //send
     var remarkup = fn.generateKeyboard({'custom': true, 'grid':true, 'list': list, 'back':back}, false);
     global.fn.sendMessage(userid, mess, remarkup);
-    fn.userOper.setSection(userid, fn.mstr.archiveMusic.search, true);
+    fn.userOper.setSection(userid, fn.mstr.arc.search, true);
 }
 
 var showResult_inlineKeyboard = function(userid, result, mess)
@@ -107,7 +107,7 @@ var showResultItem = async function(userid, chatid, text)
 var routting = function(message, speratedSection, user)
 {
     //choose searched item
-    if(speratedSection[1] === fn.mstr.archiveMusic.search) showResultItem(message.from.id, message.chat.id, message.text);
+    if(speratedSection[1] === fn.mstr.arc.search) showResultItem(message.from.id, message.chat.id, message.text);
     //search
     else search(message.from.id, message.text, user);
 }

@@ -21,7 +21,7 @@ var sendPlayListTouser = function(userid, playlist)
     ]);
 
     var liked = playlist.liked;
-    var tx_like = (liked) ? fn.mstr.archiveMusic['liked'] : fn.mstr.archiveMusic['disliked'];
+    var tx_like = (liked) ? fn.mstr.arc['liked'] : fn.mstr.arc['disliked'];
     //push([ {'text': '❌', 'callback_data': fn_close}, ]);
 
     //message
@@ -85,7 +85,7 @@ var show = async function(userid, text)
     var titles = [];
 
     // home playlists
-    let homePlaylists = fn.m.archiveMusic.playlists.getHomePlayLists();
+    let homePlaylists = fn.m.arc.playlists.getHomePlayLists();
     let isInHome = function(id)
     {
         let isInHomeKey = false;

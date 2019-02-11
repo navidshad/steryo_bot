@@ -28,7 +28,7 @@ var getview_main = function(liked, versions, mediaid, option={})
     if(detailArr.length == 0) detailArr.push([orig_btn]);
 
     // like
-    var tx_like = (liked) ? fn.mstr.archiveMusic['liked'] : fn.mstr.archiveMusic['disliked'];
+    var tx_like = (liked) ? fn.mstr.arc['liked'] : fn.mstr.arc['disliked'];
     var fn_close    = queryTag['userAbility'] + '-' + queryTag['user'] + '-' + queryTag['media'] + '-' + queryTag['close'];
     var fn_like     = queryTag['userAbility'] + '-' + queryTag['user'] + '-' + queryTag['media'] + '-' + queryTag['like'] + '-' + mediaid;
 
@@ -143,7 +143,7 @@ var addmediatoPlaylist = function(query, mediaid, listid)
 {
     close(query);
     fn.api.getmediabyid(mediaid, (media) => {
-        if(!media.title) {global.fn.sendMessage(query.from.id, fn.mstr.archiveMusic.mess['nomedia']); return;}
+        if(!media.title) {global.fn.sendMessage(query.from.id, fn.mstr.arc.mess['nomedia']); return;}
         var newmediadetail = {'title': media.title, 'singer': media.albumartist}
         //add to play list
         fn.api.editplaylist({'media': newmediadetail, 'id': listid}, (result) => {
@@ -180,7 +180,7 @@ var query = function(query, speratedQuery)
     // else if (speratedQuery[3] === queryTag['addtoplaylist'])
     // {
     //     fn.api.getplaylists((playlists) => {
-    //         if(playlists.length == 0) {global.fn.sendMessage(query.from.id, fn.mstr.archiveMusic.mess['noplaylist']); return;}
+    //         if(playlists.length == 0) {global.fn.sendMessage(query.from.id, fn.mstr.arc.mess['noplaylist']); return;}
     //         close(query);
     //         show(query.from.id, query.message.chat.id, speratedQuery[2], {'mode': 'addplaylist', 'playlists':playlists});
     //     });

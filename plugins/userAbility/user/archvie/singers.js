@@ -2,7 +2,7 @@ var show = async function(userid, states){
     fn.userOper.setSection(userid, fn.mstr.userAbility.sections.s, true);
     var list = [];
     var back = fn.str['backToMenu'];
-    var mess = fn.mstr.archiveMusic.btns['singers'].lable;
+    var mess = fn.mstr.arc.btns['singers'].lable;
 
     //get list
     var singers = await fn.api.getsingers(40,1).then();

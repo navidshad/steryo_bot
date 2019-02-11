@@ -10,16 +10,16 @@ var showalbum = async function(userid, name, singer)
     
     //create callback keyboard
     var detailArr   = [];
-    var qTag = fn.mstr.archiveMusic.qu;
-    var fn_close    = qTag['archiveMusic'] + '-' + qTag['admin'] + '-' + qTag['a_album'] + '-' + qTag['close'];
-    var fn_edit     = qTag['archiveMusic'] + '-' + qTag['admin'] + '-' + qTag['a_album'] + '-' + qTag['edit'] + '-' + album.id;
-    var fn_reload   = qTag['archiveMusic'] + '-' + qTag['admin'] + '-' + qTag['a_album'] + '-' + qTag['reload'] + '-' + album.id;
-    var fn_delete   = qTag['archiveMusic'] + '-' + qTag['admin'] + '-' + qTag['a_album'] + '-' + qTag['delete'] + '-' + album.id;
-    var fn_link     = qTag['archiveMusic'] + '-' + qTag['admin'] + '-' + qTag['a_album'] + '-' + qTag['link'] + '-' + album.id;
+    var qTag = fn.mstr.arc.qu;
+    var fn_close    = qTag['arc'] + '-' + qTag['admin'] + '-' + qTag['a_album'] + '-' + qTag['close'];
+    var fn_edit     = qTag['arc'] + '-' + qTag['admin'] + '-' + qTag['a_album'] + '-' + qTag['edit'] + '-' + album.id;
+    var fn_reload   = qTag['arc'] + '-' + qTag['admin'] + '-' + qTag['a_album'] + '-' + qTag['reload'] + '-' + album.id;
+    var fn_delete   = qTag['arc'] + '-' + qTag['admin'] + '-' + qTag['a_album'] + '-' + qTag['delete'] + '-' + album.id;
+    var fn_link     = qTag['arc'] + '-' + qTag['admin'] + '-' + qTag['a_album'] + '-' + qTag['link'] + '-' + album.id;
     
     //medias
     album.medias.forEach(element => {
-        fn_ = qTag['archiveMusic'] + '-' + qTag['admin'] + '-' + qTag['a_album'] + '-' + qTag['showmedia'] + '-' + element._id;
+        fn_ = qTag['arc'] + '-' + qTag['admin'] + '-' + qTag['a_album'] + '-' + qTag['showmedia'] + '-' + element._id;
         text = element.title;
         detailArr.push([{'text': text, 'callback_data': fn_}]);
     });
@@ -71,7 +71,7 @@ var media = require('./media');
 
 var query = function(query, speratedQuery, user){
     var last = speratedQuery.length-1;
-    var qTag = fn.mstr.archiveMusic.qu;
+    var qTag = fn.mstr.arc.qu;
 
     //close
     if (speratedQuery[last] === qTag['close']) close(query);
@@ -86,7 +86,7 @@ var query = function(query, speratedQuery, user){
     else if (speratedQuery[3] === qTag['link'])
     {
         var albumid = speratedQuery[last];
-        var startParam = `${fn.mstr.archiveMusic.linkRoutes.album}-${albumid}`;
+        var startParam = `${fn.mstr.arc.linkRoutes.album}-${albumid}`;
         var link = fn.getStartLink(startParam);
         fn.sendMessage(query.from.id, link);
     }

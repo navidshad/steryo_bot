@@ -1,7 +1,7 @@
 var checkQuery = function(option){
 
     var btnsArr  = [ 
-        fn.mstr.archiveMusic.qu['archiveMusic']
+        fn.mstr.arc.qu['arc']
     ];
 
     var result = {}
@@ -26,7 +26,7 @@ var checkQuery = function(option){
 var am_q_routting = function(query, speratedQuery, user)
 {
     var last = speratedQuery.length-1;
-    var qTag = fn.mstr.archiveMusic.qu;
+    var qTag = fn.mstr.arc.qu;
 
     //remove query message
     //global.robot.bot.deleteMessage(query.message.chat.id, query.message.message_id);
@@ -35,13 +35,13 @@ var am_q_routting = function(query, speratedQuery, user)
     {
         //admin album
         if(speratedQuery[2] === qTag['a_album'])
-            fn.m.archiveMusic.singers.album.query(query, speratedQuery, user);
+            fn.m.arc.singers.album.query(query, speratedQuery, user);
         //admin music
         else if(speratedQuery[2] === qTag['a_media'])
-            fn.m.archiveMusic.singers.album.media.query(query, speratedQuery, user);
+            fn.m.arc.singers.album.media.query(query, speratedQuery, user);
         //admin playlist
         else if(speratedQuery[2] === qTag['a_playlist'])
-            fn.m.archiveMusic.playlists.query(query, speratedQuery, user);
+            fn.m.arc.playlists.query(query, speratedQuery, user);
     }
 }
 

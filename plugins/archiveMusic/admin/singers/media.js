@@ -6,12 +6,12 @@ var show = async function(chatid, id, flag)
 
     //create callback keyboard
     var detailArr   = [];
-    var qTag = fn.mstr.archiveMusic.qu;
-    var fn_close    = qTag['archiveMusic'] + '-' + qTag['admin'] + '-' + qTag['a_media'] + '-' + qTag['close'];
-    var fn_addPlyls = qTag['archiveMusic'] + '-' + qTag['admin'] + '-' + qTag['a_media'] + '-' + qTag['addtoplaylist'] + '-' + media._id;
-    var fn_delete   = qTag['archiveMusic'] + '-' + qTag['admin'] + '-' + qTag['a_media'] + '-' + qTag['delete'] + '-' + media._id;
-    var fn_back     = qTag['archiveMusic'] + '-' + qTag['admin'] + '-' + qTag['a_media'] + '-' + qTag['back'] + '-' + media._id;
-    var fn_link     = qTag['archiveMusic'] + '-' + qTag['admin'] + '-' + qTag['a_media'] + '-' + qTag['link'] + '-' + media._id;
+    var qTag = fn.mstr.arc.qu;
+    var fn_close    = qTag['arc'] + '-' + qTag['admin'] + '-' + qTag['a_media'] + '-' + qTag['close'];
+    var fn_addPlyls = qTag['arc'] + '-' + qTag['admin'] + '-' + qTag['a_media'] + '-' + qTag['addtoplaylist'] + '-' + media._id;
+    var fn_delete   = qTag['arc'] + '-' + qTag['admin'] + '-' + qTag['a_media'] + '-' + qTag['delete'] + '-' + media._id;
+    var fn_back     = qTag['arc'] + '-' + qTag['admin'] + '-' + qTag['a_media'] + '-' + qTag['back'] + '-' + media._id;
+    var fn_link     = qTag['arc'] + '-' + qTag['admin'] + '-' + qTag['a_media'] + '-' + qTag['link'] + '-' + media._id;
 
     
     //manage
@@ -35,7 +35,7 @@ var show = async function(chatid, id, flag)
             var isselected = false;
             element.list.forEach(mediaItem => { if(mediaItem.title === media.title) isselected = true; }, this);
             
-            fn_add = qTag['archiveMusic'] + '-' + qTag['admin'] + '-' + qTag['a_media'] + '-' + qTag['chooseplaylist'] + '-' + element._id + '-' + media._id;
+            fn_add = qTag['arc'] + '-' + qTag['admin'] + '-' + qTag['a_media'] + '-' + qTag['chooseplaylist'] + '-' + element._id + '-' + media._id;
             tx_text = (isselected) ? '✅ ' + element.name : element.name;
             detailArr.push([ {'text': tx_text, 'callback_data': fn_add} ]);
         });
@@ -92,7 +92,7 @@ var addmediatoPlaylist = async function(query, mediaid, listid)
     var result = await fn.api.getmediabyid(mediaid).then();
     var media = result.media;
     
-    if(!media.title) {global.fn.sendMessage(query.from.id, fn.mstr.archiveMusic.mess['nomedia']); return;}
+    if(!media.title) {global.fn.sendMessage(query.from.id, fn.mstr.arc.mess['nomedia']); return;}
     
     var newmediadetail = {'title': media.title, 'singer': media.albumartist}
     //add to play list
@@ -106,7 +106,7 @@ var addmediatoPlaylist = async function(query, mediaid, listid)
 
 var query = function(query, speratedQuery, user){
     var last = speratedQuery.length-1;
-    var qTag = fn.mstr.archiveMusic.qu;
+    var qTag = fn.mstr.arc.qu;
 
     //close
     if (speratedQuery[last] === qTag['close']) close(query);
@@ -114,7 +114,7 @@ var query = function(query, speratedQuery, user){
     //show play lists
     else if (speratedQuery[last-1] === qTag['addtoplaylist']){
         fn.api.getplaylists((playlists) => {
-            if(playlists.length == 0) {global.fn.sendMessage(query.from.id, fn.mstr.archiveMusic.mess['noplaylist']); return;}
+            if(playlists.length == 0) {global.fn.sendMessage(query.from.id, fn.mstr.arc.mess['noplaylist']); return;}
             close(query);
             show(query.message.chat.id, speratedQuery[last], {'mode': 'addplaylist', 'playlists':playlists});
         });
@@ -137,7 +137,7 @@ var query = function(query, speratedQuery, user){
     else if (speratedQuery[3] === qTag['link'])
     {
         var mediaid = speratedQuery[last];
-        var startParam = `${fn.mstr.archiveMusic.linkRoutes.media}-${mediaid}`;
+        var startParam = `${fn.mstr.arc.linkRoutes.media}-${mediaid}`;
         var link = fn.getStartLink(startParam);
         fn.sendMessage(query.from.id, link);
     }

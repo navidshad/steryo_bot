@@ -1,10 +1,10 @@
-var name = 'archiveMusic';
+var name = 'arc';
 
 var checkRoute = function(option){
 
     var btnsArr  = [
-        fn.mstr.archiveMusic['name'],
-        fn.mstr.archiveMusic['back']
+        fn.mstr.arc['name'],
+        fn.mstr.arc['back']
     ];
 
     var result = {}
@@ -37,13 +37,13 @@ var checkRoute = function(option){
 }
 
  var show = function(userid, injectedtext){
-    fn.userOper.setSection(userid, fn.mstr.archiveMusic['name'], true);
+    fn.userOper.setSection(userid, fn.mstr.arc['name'], true);
     var list = [
-        [fn.mstr.archiveMusic.btns['singers'].lable, fn.mstr.archiveMusic.btns['addmusic']],
-        [fn.mstr.archiveMusic.btns['playlists'].lable]
+        [fn.mstr.arc.btns['singers'].lable, fn.mstr.arc.btns['addmusic']],
+        [fn.mstr.arc.btns['playlists'].lable]
     ];
     var back = fn.str.goToAdmin['back'];
-    var mess = (injectedtext) ? injectedtext : fn.mstr.archiveMusic['name'];
+    var mess = (injectedtext) ? injectedtext : fn.mstr.arc['name'];
     global.fn.sendMessage(userid, mess, fn.generateKeyboard({'custom': true, 'grid':false, 'list': list, 'back':back}, false));
 }
 
@@ -61,18 +61,18 @@ var routting = function(message, speratedSection){
     var last = speratedSection.length-1;
 
     //show music root
-    if(text === fn.mstr.archiveMusic['name'] || text === fn.mstr.archiveMusic['back'])
+    if(text === fn.mstr.arc['name'] || text === fn.mstr.arc['back'])
         show(message.from.id);
 
     //addmusic
-    else if(text === fn.mstr.archiveMusic.btns['addmusic']) upload.addmode(message);
+    else if(text === fn.mstr.arc.btns['addmusic']) upload.addmode(message);
 
     //singers
-    else if (text === fn.mstr.archiveMusic.btns['singers'].lable || text === fn.mstr.archiveMusic.btns['singers'].back || speratedSection[3] === fn.mstr.archiveMusic.sections.s)
+    else if (text === fn.mstr.arc.btns['singers'].lable || text === fn.mstr.arc.btns['singers'].back || speratedSection[3] === fn.mstr.arc.sections.s)
         singers.routting(message, speratedSection);
 
     //play lists
-    else if (text === fn.mstr.archiveMusic.btns['playlists'].lable || text === fn.mstr.archiveMusic.btns['playlists'].back ||  speratedSection[3] === fn.mstr.archiveMusic.btns['playlists'].lable)
+    else if (text === fn.mstr.arc.btns['playlists'].lable || text === fn.mstr.arc.btns['playlists'].back ||  speratedSection[3] === fn.mstr.arc.btns['playlists'].lable)
         playlists.routting(message, speratedSection);
 }
 

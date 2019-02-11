@@ -4,10 +4,10 @@ module.exports = function()
     global.fn.eventEmitter.on('commands', (message, user) =>
     {
         console.log('get command');
-        var startParam_playlist = global.fn.mstr.archiveMusic.linkRoutes.playlist;
-        var startParam_album 		= global.fn.mstr.archiveMusic.linkRoutes.album;
-				var startParam_media 		= global.fn.mstr.archiveMusic.linkRoutes.media;
-				var startParam_search		= global.fn.mstr.archiveMusic.linkRoutes.search;
+        var startParam_playlist = global.fn.mstr.arc.linkRoutes.playlist;
+        var startParam_album 		= global.fn.mstr.arc.linkRoutes.album;
+				var startParam_media 		= global.fn.mstr.arc.linkRoutes.media;
+				var startParam_search		= global.fn.mstr.arc.linkRoutes.search;
 
         var text = message.text;
         var userid = message.from.id;

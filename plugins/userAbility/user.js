@@ -12,7 +12,7 @@ var checkRoute = function(option){
     });
 
     // add home playlists
-    let playlists = fn.m.archiveMusic.playlists.getHomePlayLists();
+    let playlists = fn.m.arc.playlists.getHomePlayLists();
     playlists.forEach(playlist => { btnsArr.push(playlist.name) });
 
 
@@ -67,7 +67,7 @@ var getButtons = function ()
     });
 
     // add home playlists
-    let playlists = fn.m.archiveMusic.playlists.getHomePlayLists();
+    let playlists = fn.m.arc.playlists.getHomePlayLists();
     playlists.forEach(playlist => { buttons.push(playlist.name) });
 
     return buttons;
@@ -98,7 +98,7 @@ var routting = function(message, speratedSection, user)
         favorite.show(message.from.id);
 
     // home playlist
-    let playlists = fn.m.archiveMusic.playlists.getHomePlayLists();
+    let playlists = fn.m.arc.playlists.getHomePlayLists();
     for (let i = 0; i < playlists.length; i++) 
     {
         const plDetail = playlists[i];

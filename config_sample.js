@@ -19,7 +19,7 @@ module.exports = {
         'chanelChecker'     :true,
         'favorites'         :false,
 
-        'archiveMusic'      :true,
+        'arc'      :true,
         'userAbility'       :true,
     },
 
