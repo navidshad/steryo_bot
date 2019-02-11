@@ -45,16 +45,33 @@ var show = async function(chatid, id, flag)
         ]);
     }
 
+    // version -----------------------------------------------------------
+    var version = '96';
+    var hasVersion = false;
+    var vDetail = {};
+    media.versions.forEach(element => {
+        if(element.name !== version) return;
+        hasVersion = true;
+        vDetail = element;
+    });
+    var sendType = (vDetail.type == 'ogg') ? 'voice' : 'sound';
+    
     //send
     var description =  /* media.title + */ '\n @' +  global.robot.username;
-    switch (media.type) {     
-        case 'audio':
-            global.robot.bot.sendAudio(chatid, media.telegramid, {'caption' : description, "reply_markup" : {"inline_keyboard" : detailArr}});        
-            break;
-        case 'video':
-            global.robot.bot.sendVideo(chatid, media.telegramid, {'caption' : description, 'inline_keyboard': detailArr});                
-            break;
-    }
+    var markup = {'caption' : description, "reply_markup" : {"inline_keyboard" : detailArr}};
+    // switch (media.type) {     
+    //     case 'audio':
+    //         global.robot.bot.sendAudio(chatid, resID, {'caption' : description, "reply_markup" : {"inline_keyboard" : detailArr}});        
+    //         break;
+    //     case 'video':
+    //         global.robot.bot.sendVideo(chatid, media.telegramid, {'caption' : description, 'inline_keyboard': detailArr});                
+    //         break;
+    // }
+    
+    //send version
+    if(hasVersion) global.fn.sendDocument(chatid, vDetail.telegramid, sendType, markup);
+    //send orginal version
+    else global.fn.sendDocument(chatid, media.telegramid, 'sound', markup);
 }
 
 var close = function(query){
