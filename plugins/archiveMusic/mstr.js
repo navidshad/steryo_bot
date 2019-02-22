@@ -15,7 +15,8 @@ module.exports.arc = {
     },
 
     btns_user: {
-
+        nextPage:'⬅️ ' + 'صفحه بعد',
+        backPage:'➡️ ' + 'صفحه قبل',
     },
 
     sections    : {
@@ -40,11 +41,14 @@ module.exports.arc = {
         close   : 'cls',
         addtoplaylist : 'atp',
         name    : 'nm',
-        chooseplaylist : 'cpl',
         back : 'bck',
         like :'lk',
         link:'lk',
         settoHome: 'sH',
+
+        navigateplaylist : 'nav',
+        next : '1',
+        back : '-0',
     },
 
     mess : {

@@ -3,6 +3,7 @@ var show = async function(chatid, id, flag)
     console.log('show media') 
     var result = await fn.api.getmediabyid(id).then();
     var media = result.media;
+    let mStr = fn.mstr[moduleName];
 
     //create callback keyboard
     var detailArr   = [];
@@ -29,16 +30,32 @@ var show = async function(chatid, id, flag)
         ]);
     }
     
-    else if (flag.mode === 'addplaylist'){
-        flag.playlists.forEach(element => {
+    else if (flag.mode === 'addplaylist')
+    {
+        flag.playlists.list.forEach(element => {
             //check if the play list was selected already
             var isselected = false;
             element.list.forEach(mediaItem => { if(mediaItem.title === media.title) isselected = true; }, this);
             
-            fn_add = qTag['arc'] + '-' + qTag['admin'] + '-' + qTag['a_media'] + '-' + qTag['chooseplaylist'] + '-' + element._id + '-' + media._id;
-            tx_text = (isselected) ? '✅ ' + element.name : element.name;
+            let fn_add = qTag['arc'] + '-' + qTag['admin'] + '-' + qTag['a_media'] + '-' + qTag['chooseplaylist'] + '-' + element._id + '-' + media._id;
+            let tx_text = (isselected) ? '✅ ' + element.name : element.name;
             detailArr.push([ {'text': tx_text, 'callback_data': fn_add} ]);
         });
+
+        // navigator
+        let totalPage = flag.playlists.totalpage;
+        let current = flag.playlists.current;
+
+        let fn_next = qTag['arc'] + '-' + qTag['admin'] + '-' + qTag['a_media'] + '-' + qTag['navigateplaylist'] + '-' + qTag['next'] + current + '-' + media._id;
+        let fn_back = qTag['arc'] + '-' + qTag['admin'] + '-' + qTag['a_media'] + '-' + qTag['navigateplaylist'] + '-' + qTag['back'] + current + '-' + media._id;
+        let tx_next = mStr.btns_user.nextPage;
+        let tx_back = mStr.btns_user.backPage;
+
+        let navigator = [];
+        if(totalPage > current) navigator.push({'text': tx_next, 'callback_data': fn_next});
+        if(current > 1) navigator.push({'text': tx_back, 'callback_data': fn_back});
+        if(navigator.length) detailArr.push(navigator);
+
         detailArr.push([
             {'text': '⤴️ ' + 'برگشت ', 'callback_data': fn_back},
             {'text': '❌', 'callback_data': fn_close},
@@ -98,31 +115,52 @@ var addmediatoPlaylist = async function(query, mediaid, listid)
     //add to play list
     fn.api.editplaylist({'media': newmediadetail, 'id': listid}, (result) => {
         //get new playlists
-        fn.api.getplaylists((newPlaylists) => { 
+        fn.api.getplaylists(1, (newPlaylists) => { 
             show(query.message.chat.id, mediaid, {'mode': 'addplaylist', 'playlists':newPlaylists}) 
         });
     });
 }
 
-var query = function(query, speratedQuery, user){
+async function showPlaylistView(chatid, mediaid, page)
+{
+    let result = await fn.api.getplaylists(page).then();
+    
+    if(result.list.length == 0) 
+    {
+        global.fn.sendMessage(query.from.id, fn.mstr.arc.mess['noplaylist']); 
+        return;
+    }
+
+    close(query);
+    show(query.message.chat.id, speratedQuery[last], {'mode': 'addplaylist', 'playlists':result});
+}
+
+let moduleName  = '';
+var query = async function(query, speratedQuery, user, mName)
+{
+    moduleName = mName;
     var last = speratedQuery.length-1;
-    var qTag = fn.mstr.arc.qu;
+    var qTag = fn.mstr[moduleName].qu;
 
     //close
     if (speratedQuery[last] === qTag['close']) close(query);
 
     //show play lists
-    else if (speratedQuery[last-1] === qTag['addtoplaylist']){
-        fn.api.getplaylists((playlists) => {
-            if(playlists.length == 0) {global.fn.sendMessage(query.from.id, fn.mstr.arc.mess['noplaylist']); return;}
-            close(query);
-            show(query.message.chat.id, speratedQuery[last], {'mode': 'addplaylist', 'playlists':playlists});
-        });
-    }
+    else if (speratedQuery[last-1] === qTag['addtoplaylist'])
+        showPlaylistView(query.message.chat.id, speratedQuery[last], 1);
 
     //choose a play list
     else if(speratedQuery[last-2] === qTag['chooseplaylist']) 
         addmediatoPlaylist(query, speratedQuery[last], speratedQuery[last-1]);
+
+    //navigate playlist
+    else if (speratedQuery[last-3] === qTag['navigateplaylist'])
+    {
+        let navigate = parseInt(speratedQuery[last-2]);
+        let current = parseInt(speratedQuery[last-1]);
+        let nextPage = current + navigate;
+        showPlaylistView(query.message.chat.id, speratedQuery[last], nextPage);
+    }
 
     //back to main mode
     else if (speratedQuery[last-1] === qTag['back']) {

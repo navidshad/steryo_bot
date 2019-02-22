@@ -91,7 +91,7 @@ var routting = function(message, speratedSection, user)
 
     //playlist
     if(states['playlist'].key && checkedRoute_text.button === states['playlist'].value || checkedRoute_section.button === states['playlist'].value)
-        playlist.routting(message, speratedSection, passToRoute, user);
+        playlist.routting(message, speratedSection, passToRoute, user, mName);
 
     //favorites
     if(states['favorites'].key && checkedRoute_text.button === states['favorites'].value)

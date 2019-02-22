@@ -148,7 +148,7 @@ var addmediatoPlaylist = function(query, mediaid, listid)
         //add to play list
         fn.api.editplaylist({'media': newmediadetail, 'id': listid}, (result) => {
             //get new playlists
-            fn.api.getplaylists((newPlaylists) => { show(query.from.id, query.message.chat.id, mediaid, {'mode': 'addplaylist', 'playlists':newPlaylists}) });
+            fn.api.getplaylists(1, (newPlaylists) => { show(query.from.id, query.message.chat.id, mediaid, {'mode': 'addplaylist', 'playlists':newPlaylists}) });
         });
     });
 }
@@ -179,7 +179,7 @@ var query = function(query, speratedQuery)
     // // show play lists
     // else if (speratedQuery[3] === queryTag['addtoplaylist'])
     // {
-    //     fn.api.getplaylists((playlists) => {
+    //     fn.api.getplaylists(1, (playlists) => {
     //         if(playlists.length == 0) {global.fn.sendMessage(query.from.id, fn.mstr.arc.mess['noplaylist']); return;}
     //         close(query);
     //         show(query.from.id, query.message.chat.id, speratedQuery[2], {'mode': 'addplaylist', 'playlists':playlists});

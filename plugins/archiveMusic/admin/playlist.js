@@ -12,37 +12,24 @@ function getHomePlayLists()
     return list;
 }
 
-var show = function(userid, injectedtext)
-{
-    var list = [ [fn.mstr.arc.btns['addlist'], fn.mstr.arc['back']].reverse() ];
-    var mess = (injectedtext) ? injectedtext : fn.mstr.arc.btns['playlists'].lable;
-
-    //get play lists
-    fn.api.getplaylists((playlists) => {
-        playlists.forEach(element => { list.push([element.name]); });
-        fn.userOper.setSection(userid, fn.mstr.arc.btns['playlists'].lable, true);
-        global.fn.sendMessage(userid, mess, fn.generateKeyboard({'custom': true, 'grid':false, 'list': list, 'back': null}, false));
-    });
-}
-
 var create = function(userid, name)
 {
     //check string array
     if(fn.checkValidMessage(name)) { global.fn.sendMessage(userid, fn.mstr.arc.mess['chooseothernameforlist']); return; }
     //send to api
     fn.api.sendplaylist({'name': name}, (body) => {
-        if(body.key) show(userid, fn.str['seccess']);
+        if(body.key) show(userid, 1, fn.str['seccess']);
         else global.fn.sendMessage(userid, fn.mstr.arc.mess['chooseothernameforlist']);
     })
 }
 
-var getplaylist = function(userid, name)
-{
-    fn.api.getplaylist(name, (playlist) => {
-        if (!playlist.name) { global.fn.sendMessage(userid, fn.mstr.arc.mess['deletedplaylist']); return; }
-        showplaylist(userid, playlist);
-    });
-}
+// var getplaylist = function(userid, name)
+// {
+//     fn.api.getplaylist(name, (playlist) => {
+//         if (!playlist.name) { global.fn.sendMessage(userid, fn.mstr.arc.mess['deletedplaylist']); return; }
+//         showplaylist(userid, playlist);
+//     });
+// }
 
 var showplaylist = function(userid, playlist)
 {
@@ -125,7 +112,7 @@ var editname = async function(message, id)
         }
 
         showplaylist(message.from.id, result.playlist);
-        show(message.from.id, 'انجام شد.');
+        show(message.from.id, 1, 'انجام شد.');
     });
 }
 
@@ -148,30 +135,80 @@ var reloadplaylist = function(query, pid)
     });
 }
 
-var routting = async function(message, speratedSection)
+var show = async function(userid, page, injectedtext)
+{
+    var list = [ [fn.mstr.arc.btns['addlist'], fn.mstr.arc['back']].reverse() ];
+    var mess = (injectedtext) ? injectedtext : fn.mstr.arc.btns['playlists'].lable;
+    let playlistSection = fn.mstr.arc.btns['playlists'].lable;
+    let mStr = fn.mstr[moduleName];
+
+    //get play lists
+    var result = await fn.api.getplaylists(page).then();
+    result.list.map(item => { 
+        list.push([item.name]);
+    });
+
+    let navigator = [];
+    if(result.totalpage > result.current) navigator.push(mStr.btns_user.nextPage);
+    if(result.current > 1) navigator.push(mStr.btns_user.backPage);
+    if(navigator.length) list.push(navigator);
+    
+    var markup = fn.generateKeyboard({'custom': true, 'grid':false, 'list': list, 'back': null}, false);
+    global.fn.sendMessage(userid, mess, markup);
+
+    fn.userOper.setSection(userid, playlistSection, true, 
+        () => {
+            //page section
+            let pageSection = `${result.totalpage}-${result.current}`;
+            fn.userOper.setSection(userid, pageSection, true);
+        });
+}
+
+function navigatePage(userid, navigate, pageDetail)
+{
+    let total = parseInt(pageDetail.split('-')[0]);
+    let current = parseInt(pageDetail.split('-')[1]);
+
+    let next = current + navigate;
+
+    if(next <= total && next > 0) 
+        show(userid, next);
+}
+
+let moduleName  = '';
+var routting = async function(message, speratedSection, user, mName)
 {
     var text = message.text;
     var last = speratedSection.length-1;
+    let userid = message.from.id;
     var qTag = fn.mstr.arc.qu;
+    moduleName = mName;
+    let mStr = fn.mstr[moduleName];
     
-    //show music root
+    //show playlists
     if(text === fn.mstr.arc.btns['playlists'].lable || text === fn.mstr.arc.btns['playlists'].back) 
-        show(message.from.id);
+        show(userid, 1);
+
+    // navigate
+    // next page
+    else if (text == mStr.btns_user.nextPage) navigatePage(userid, 1, speratedSection[last]);
+    // back page
+    else if (text == mStr.btns_user.backPage) navigatePage(userid, -1, speratedSection[last]);
 
     //create a play list 
     else if (text === fn.mstr.arc.btns['addlist']){
         var mess = fn.mstr.arc.mess['addlist'];
-        fn.userOper.setSection(message.from.id, fn.mstr.arc.btns['addlist'], true);
-        global.fn.sendMessage(message.from.id, mess, fn.generateKeyboard({'section': fn.mstr.arc.btns['playlists'].back}, true));
+        fn.userOper.setSection(userid, fn.mstr.arc.btns['addlist'], true);
+        global.fn.sendMessage(userid, mess, fn.generateKeyboard({'section': fn.mstr.arc.btns['playlists'].back}, true));
     }
-    else if (speratedSection[last] === fn.mstr.arc.btns['addlist']) create(message.from.id, text);
+    else if (speratedSection[last] === fn.mstr.arc.btns['addlist']) create(userid, text);
 
     //edit name
     else if (speratedSection[last-1] === fn.mstr.arc.mess['e_listname'])
         editname(message, speratedSection[last]);
 
     //choose a play list 
-    else getplaylist(message.from.id, text);
+    else getplaylist(userid, text);
 }
 
 var query = async function(query, speratedQuery)

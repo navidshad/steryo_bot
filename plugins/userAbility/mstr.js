@@ -9,6 +9,11 @@ module.exports.userAbility = {
         settings:'⚙️ ' + 'تنظیمات کاربران استریو',
     },
 
+    btns_user: {
+        nextPage:'⬅️ ' + 'صفحه بعد',
+        backPage:'➡️ ' + 'صفحه قبل',
+    },
+
     query : {
         userAbility : 'userAbility',
         admin:'a',

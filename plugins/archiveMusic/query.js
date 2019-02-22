@@ -23,7 +23,7 @@ var checkQuery = function(option){
     return result;
 }
 
-var am_q_routting = function(query, speratedQuery, user)
+var am_q_routting = function(query, speratedQuery, user, mName)
 {
     var last = speratedQuery.length-1;
     var qTag = fn.mstr.arc.qu;
@@ -35,13 +35,13 @@ var am_q_routting = function(query, speratedQuery, user)
     {
         //admin album
         if(speratedQuery[2] === qTag['a_album'])
-            fn.m.arc.singers.album.query(query, speratedQuery, user);
+            fn.m.arc.singers.album.query(query, speratedQuery, user, mName);
         //admin music
         else if(speratedQuery[2] === qTag['a_media'])
-            fn.m.arc.singers.album.media.query(query, speratedQuery, user);
+            fn.m.arc.singers.album.media.query(query, speratedQuery, user, mName);
         //admin playlist
         else if(speratedQuery[2] === qTag['a_playlist'])
-            fn.m.arc.playlists.query(query, speratedQuery, user);
+            fn.m.arc.playlists.query(query, speratedQuery, user, mName);
     }
 }
 

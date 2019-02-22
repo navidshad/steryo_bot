@@ -56,7 +56,7 @@ var query = require('./query');
 //events
 require('./events')();
 
-var routting = function(message, speratedSection){
+var routting = function(message, speratedSection, user, mName){
     var text = message.text;
     var last = speratedSection.length-1;
 
@@ -69,11 +69,11 @@ var routting = function(message, speratedSection){
 
     //singers
     else if (text === fn.mstr.arc.btns['singers'].lable || text === fn.mstr.arc.btns['singers'].back || speratedSection[3] === fn.mstr.arc.sections.s)
-        singers.routting(message, speratedSection);
+        singers.routting(message, speratedSection, user, mName);
 
     //play lists
     else if (text === fn.mstr.arc.btns['playlists'].lable || text === fn.mstr.arc.btns['playlists'].back ||  speratedSection[3] === fn.mstr.arc.btns['playlists'].lable)
-        playlists.routting(message, speratedSection);
+        playlists.routting(message, speratedSection, user, mName);
 }
 
 module.exports = { name, checkRoute, query, routting, show, upload, singers, playlists }

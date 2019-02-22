@@ -80,9 +80,10 @@ var close = function(query){
 
 var media = require('./media');
 
-var show = async function(userid, text)
+async function show(userid, page, text)
 {
     var titles = [];
+    let mStr = fn.mstr[moduleName];
 
     // home playlists
     let homePlaylists = fn.m.arc.playlists.getHomePlayLists();
@@ -97,32 +98,64 @@ var show = async function(userid, text)
     }
 
     //get playlists
-    var playlists = await fn.api.getplaylists().then();
-    playlists.map(item => { 
-        if(!isInHome(item._id)) titles.push(item.name);
+    var result = await fn.api.getplaylists(page).then();
+    result.list.map(item => { 
+        if(!isInHome(item._id)) titles.push([item.name]);
     });
 
+    let navigator = [];
+    if(result.totalpage > result.current) navigator.push(mStr.btns_user.nextPage);
+    if(result.current > 1) navigator.push(mStr.btns_user.backPage);
+    if(navigator.length) titles.push(navigator);
+
     //show list
-    var mess = text;
+    var mess = text == null ? page : `${text} ${page}`;
     var back = fn.str['backToMenu'];
-    var markup = fn.generateKeyboard({'custom':true, 'grid':true, 'list': titles, 'back':back}, false);
+    var markup = fn.generateKeyboard({'custom':true, 'grid':false, 'list': titles, 'back':back}, false);
     global.fn.sendMessage(userid, mess, markup);
-    fn.userOper.setSection(userid, mess, true);
+
+    fn.userOper.setSection(userid, text, true, 
+        () => {
+            // page section
+            let pageSection = `${result.totalpage}-${result.current}`;
+            fn.userOper.setSection(userid, pageSection, true);
+        });
+}   
+
+function navigatePage(userid, navigate, pageDetail, playlistSection)
+{
+    let total = parseInt(pageDetail.split('-')[0]);
+    let current = parseInt(pageDetail.split('-')[1]);
+
+    let next = current + navigate;
+
+    if(next <= total && next > 0) 
+        show(userid, next, playlistSection);
 }
 
-var routting = function(message, speratedSection, passToRoute, user)
+let moduleName = '';
+
+var routting = function(message, speratedSection, passToRoute, user, mName)
 {
-    var mName = fn.mstr.userAbility['modulename'];
     var text = message.text;
     var last = speratedSection.length-1;
+    moduleName = mName;
+    let mStr = fn.mstr[moduleName];
+    let userid = message.from.id;
+    let playlistSection = passToRoute.states['playlist']['value'];
 
-    //show list
-    if(text == passToRoute.states['playlist']['value'])
-        show(message.from.id, text);
+    // show list
+    if(text == playlistSection)
+        show(userid, 1, playlistSection);
 
-    //show playlist
-    else if (speratedSection[last] == passToRoute.states['playlist']['value'])
-        showplaylist(message.from.id, text);
+    // navigate
+    // next page
+    else if (text == mStr.btns_user.nextPage) navigatePage(userid, 1, speratedSection[last], playlistSection);
+    // back page
+    else if (text == mStr.btns_user.backPage) navigatePage(userid, -1, speratedSection[last], playlistSection);
+
+    // show playlist
+    else showplaylist(userid, text);
 }
 
 var query = function(query, speratedQuery, user)
