@@ -46,6 +46,7 @@ module.exports.arc = {
         link:'lk',
         settoHome: 'sH',
 
+        chooseplaylist : 'cpl',
         navigateplaylist : 'nav',
         next : '1',
         back : '-0',
