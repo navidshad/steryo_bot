@@ -23,13 +23,13 @@ var create = function(userid, name)
     })
 }
 
-// var getplaylist = function(userid, name)
-// {
-//     fn.api.getplaylist(name, (playlist) => {
-//         if (!playlist.name) { global.fn.sendMessage(userid, fn.mstr.arc.mess['deletedplaylist']); return; }
-//         showplaylist(userid, playlist);
-//     });
-// }
+var getplaylist = function(userid, name)
+{
+    fn.api.getplaylist(name, (playlist) => {
+        if (!playlist.name) { global.fn.sendMessage(userid, fn.mstr.arc.mess['deletedplaylist']); return; }
+        showplaylist(userid, playlist);
+    });
+}
 
 var showplaylist = function(userid, playlist)
 {
