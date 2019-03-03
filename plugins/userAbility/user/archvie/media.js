@@ -135,6 +135,7 @@ var like = async function(query, mediaid)
 {
     var userid = query.from.id;
     var result = await fn.api.like(userid, 'media', mediaid).then();
+    console.log(result);
     var detailArr = getview_main(result.liked, result.media.versions, mediaid);
     global.robot.bot.editMessageReplyMarkup({"inline_keyboard" : detailArr}, {chat_id: query.message.chat.id, message_id: query.message.message_id});
 }

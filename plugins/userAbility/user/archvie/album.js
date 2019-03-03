@@ -77,7 +77,8 @@ var getallmedia = function(query, id)
     {
         for (let index = 0; index < album.medias.length; index++) {
             const item = album.medias[index];
-            await media.show(query.from.id, query.message.chat.id, item, {'mode':'main'});
+						//console.log('item', item);
+            await media.showbyid(query.from.id, query.message.chat.id, item._id, {'mode':'main'});
         }
         
         // analytic
