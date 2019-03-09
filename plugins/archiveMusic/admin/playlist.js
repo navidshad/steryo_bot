@@ -244,7 +244,7 @@ var query = async function(query, speratedQuery)
         var mediaIndex = speratedQuery[last];
         var listid  = speratedQuery[last-1];
         
-        var playlist = await fn.api.getplaylistByid(id);
+        var playlist = await fn.api.getplaylistByid(listid);
         var mediaid = playlist.list[mediaIndex]._id;
         var result = await fn.api.getmediabyid(mediaid).then();
         var media = result.media;
