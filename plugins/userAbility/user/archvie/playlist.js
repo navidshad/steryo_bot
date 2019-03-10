@@ -100,18 +100,18 @@ async function show(userid, page, text)
     //get playlists
     var result = await fn.api.getplaylists(page).then();
     result.list.map(item => { 
-        if(!isInHome(item._id)) titles.push([item.name]);
+        if(!isInHome(item._id)) titles.push(item.name);
     });
 
     let navigator = [];
-    if(result.totalpage > result.current) navigator.push(mStr.btns_user.nextPage);
-    if(result.current > 1) navigator.push(mStr.btns_user.backPage);
-    if(navigator.length) titles.push(navigator);
+    if(result.totalpage > result.current) titles.push(mStr.btns_user.nextPage);
+    if(result.current > 1) titles.push(mStr.btns_user.backPage);
+    //if(navigator.length) titles.push(navigator);
 
     //show list
     var mess = text == null ? page : `${text} ${page}`;
     var back = fn.str['backToMenu'];
-    var markup = fn.generateKeyboard({'custom':true, 'grid':false, 'list': titles, 'back':back}, false);
+    var markup = fn.generateKeyboard({'custom':true, 'grid':true, 'list': titles, 'back':back}, false);
     global.fn.sendMessage(userid, mess, markup);
 
     fn.userOper.setSection(userid, text, true, 
