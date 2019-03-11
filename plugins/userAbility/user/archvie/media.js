@@ -45,6 +45,14 @@ var getview_main = function(liked, versions, mediaid, option={})
 var show = async function(userid, chatid, returnedmedia, flag)
 {
     console.log('show media');
+	
+		// check chanel member
+		var user = await fn.userOper.checkProfile(userid).then();
+		if(!user.isMemberOfChannel) {
+			fn.m.chanelChecker.InviteUser(userid); 
+			return;
+		}
+	
     var liked = (returnedmedia.liked) ? returnedmedia.liked : false;
     var media = returnedmedia.media;
 
