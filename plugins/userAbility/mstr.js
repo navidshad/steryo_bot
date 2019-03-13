@@ -41,7 +41,7 @@ module.exports.userAbility = {
 
     access: [
         { name:'archive', value:'🎶 ' + 'آرشیو موسیقی', key: true },
-        { name:'favorites', value:'♥️ ' + 'مورد علاقه', key: true },
+        { name:'favorites', value:'♥️ ' + 'گلچین من', key: true },
         { name:'playlist', value:'💽 ' + 'پلی لیست ها', key: true },
         { name:'search', value:'🔎 ' + 'جستجو موسیقی', key: true, hide: true },
     ],
