@@ -61,8 +61,9 @@ var getallmedia = function(query, id){
     fn.api.getplaylistByid(id, async (playlist) =>
     {
         for (let index = 0; index < playlist.list.length; index++) {
+            await global.fn.sleep(500);
             const item = playlist.list[index];
-            await media.showbyid(query.from.id, query.message.chat.id, item._id, {'mode':'main'});
+            media.showbyid(query.from.id, query.message.chat.id, item._id, {'mode':'main'});
         }
         
         // analytic

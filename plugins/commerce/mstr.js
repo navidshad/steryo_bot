@@ -15,7 +15,7 @@ module.exports.commerce =
     },
 
     btns: {
-        settings : '⚙️' + ' - ' + 'تنظیمات',
+        settings : '⚙️' + ' - ' + 'تنظیمات تجارت',
         backsetting: '🔙 بازگشت به ' + '⚙️' + ' - ' + 'تنظیمات',
         couponGenerators        :'🏷 ' + 'بن ساز ها',
         couponGeneratorsBack    :'🔙 ' + 'بن ساز ها',

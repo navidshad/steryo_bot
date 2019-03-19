@@ -76,9 +76,10 @@ var getallmedia = function(query, id)
     fn.api.getalbumbyid(id, async (album) => 
     {
         for (let index = 0; index < album.medias.length; index++) {
+            await global.fn.sleep(500);
             const item = album.medias[index];
 						//console.log('item', item);
-            await media.showbyid(query.from.id, query.message.chat.id, item._id, {'mode':'main'});
+            media.showbyid(query.from.id, query.message.chat.id, item._id, {'mode':'main'});
         }
         
         // analytic

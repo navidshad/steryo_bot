@@ -26,7 +26,7 @@ async function getDailylimitation(userid)
 
 async function getTariffs()
 {
-    let tariffs = await fn.db.tariff.find({'active': true}).sort({'days':1}).exec().then();
+    let tariffs = await fn.db.tariff.find({'active': true}).sort({'price':-1}).exec().then();
     return tariffs;
 }
 
@@ -43,7 +43,7 @@ async function showLimiteMessage(userid)
     
     let tariffs = await getTariffs();
     
-    if(tariffs.length) limitMess += '\n\n' + '💎 تعرفه ها' + '\n';
+    if(tariffs.length) limitMess += '\n\n\n' + '💎 تعرفه ها' + '\n';
     
     tariffs.forEach(tariff => 
     {
@@ -53,7 +53,7 @@ async function showLimiteMessage(userid)
         detailArr.push([t_btn]);
         
         //add to message text
-        let text = `✴️ ${tariff.name} | ${tariff.days} روزه | ${tariff.download_per_day} دانلود در روز`;
+        let text = `\n✴️ ${tariff.name} | ${tariff.days} روزه | ${tariff.download_per_day} دانلود در روز`;
         limitMess += text + '\n';
     });
     
