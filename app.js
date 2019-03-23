@@ -10,5 +10,10 @@ option.fn = {
 // start bot
 tcms.start(option);
 
+// add commerce
+let commerce = require('telegram-cms-commerce');
+commerce.startServer(80);
+tcms.addModule(commerce.module);
+
 // start express
-require('./express/bin/www');
+//require('./express/bin/www');

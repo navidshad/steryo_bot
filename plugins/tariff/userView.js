@@ -114,7 +114,7 @@ async function query(query, speratedQuery, user, mName)
     let queryTag = fn.mstr[mName].query;
     let userid = query.from.id;
 
-    // but a tariff
+    // buy a tariff
     if(speratedQuery[2] === queryTag['pey'])
     {
         console.log('pay a tariff');
