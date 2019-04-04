@@ -69,7 +69,7 @@ var getallmedia = function(query, id){
         // analytic
         let eventCategory = 'playlist';
         let eventAction = 'download all songs';
-        let eventLabel = playlist.nam;
+        let eventLabel = playlist.name;
         fn.m.analytic.trackEvent(query.from.id, eventCategory, eventAction, eventLabel);
     });
 }
