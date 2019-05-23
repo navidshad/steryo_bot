@@ -121,7 +121,8 @@ var query = function(query, speratedQuery, user)
     //close
     if (speratedQuery[3] === queryTag['close']) close(query);
     //show media
-    else if(speratedQuery[3] === queryTag['showmedia']) media.showbyid(query.from.id, query.message.chat.id, speratedQuery[last], {'mode':'main'});
+    else if(speratedQuery[3] === queryTag['showmedia']) 
+      media.showbyid(query.from.id, query.message.chat.id, speratedQuery[last], {'mode':'main', 'eventAction':'search'});
     //get all media
     //else if (speratedQuery[3] === queryTag['getallmedia']) getallmedia(query, speratedQuery[last]);
 

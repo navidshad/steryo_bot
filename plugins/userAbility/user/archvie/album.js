@@ -13,7 +13,7 @@ var sendAlbumTouser = function(userid, album)
     //medias
     album.medias.forEach(element => {
         var fn_ = queryTag['userAbility'] + '-' + queryTag['user'] + '-' + queryTag['album'] + '-' + queryTag['showmedia'] + '-' + element._id;
-        var b_txt = element.title;
+        var b_txt = (element.titleIndex.ku_so) ? element.titleIndex.ku_so : element.title;
         detailArr.push([{'text': b_txt, 'callback_data': fn_}]);
     });
 
@@ -79,7 +79,7 @@ var getallmedia = function(query, id)
             await global.fn.sleep(500);
             const item = album.medias[index];
 						//console.log('item', item);
-            media.showbyid(query.from.id, query.message.chat.id, item._id, {'mode':'main'});
+            media.showbyid(query.from.id, query.message.chat.id, item._id, {'mode':'main', 'eventAction':'album'});
         }
         
         // analytic
@@ -99,9 +99,11 @@ var query = function(query, speratedQuery, user)
     //close
     if (speratedQuery[3] === queryTag['close']) close(query);
     //show media
-    else if(speratedQuery[3] === queryTag['showmedia']) media.showbyid(query.from.id, query.message.chat.id, speratedQuery[last], {'mode':'main'});
+    else if(speratedQuery[3] === queryTag['showmedia']) 
+      media.showbyid(query.from.id, query.message.chat.id, speratedQuery[last], {'mode':'main', 'eventAction':'playlist'});
     //get all media
-    else if (speratedQuery[3] === queryTag['getallmedia']) getallmedia(query, speratedQuery[last]);
+    else if (speratedQuery[3] === queryTag['getallmedia']) 
+      getallmedia(query, speratedQuery[last]);
 }
 
 module.exports = { showalbum, media, query, showById }

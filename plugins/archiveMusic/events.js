@@ -1,9 +1,8 @@
 module.exports = function()
 {
-    //show a playlist from a link
+    //show an item from a link
     global.fn.eventEmitter.on('commands', (message, user) =>
     {
-        console.log('get command');
         var startParam_playlist = global.fn.mstr.arc.linkRoutes.playlist;
         var startParam_album 		= global.fn.mstr.arc.linkRoutes.album;
 				var startParam_media 		= global.fn.mstr.arc.linkRoutes.media;
@@ -11,6 +10,8 @@ module.exports = function()
 
         var text = message.text;
         var userid = message.from.id;
+      
+        console.log('get command', text);
 
         // return
         var notSkips = [startParam_playlist, startParam_album, startParam_media, startParam_search];
@@ -22,6 +23,7 @@ module.exports = function()
         var param = text.replace('/start ', '');
 
         let eventLable = '';
+        let campaignKeyword = '';
         
         // playlist
         if(param.startsWith(startParam_playlist))
@@ -31,6 +33,7 @@ module.exports = function()
             global.fn.m.userAbility.user.playlist.showById(userid, playlistID);
             
             eventLable = `playlist | ${playlistID}`;
+            campaignKeyword = 'playlist';
         }
 
         // album
@@ -41,21 +44,23 @@ module.exports = function()
             global.fn.m.userAbility.user.singers.album.showById(userid, albumid);
             
             eventLable = `album | ${albumid}`;
+            campaignKeyword = 'album';
         }
 				
-		// media
-		else if(param.startsWith(startParam_media))
+		    // media
+		    else if(param.startsWith(startParam_media))
         {
             console.log(`commands, begin to open media`);
             var mediaid = param.split('-')[1];
-			var chatid = message.chat.id;
+			      var chatid = message.chat.id;
             global.fn.m.userAbility.user.singers.album.media.showbyid(userid, chatid, mediaid, {'mode':'main'});
             
             eventLable = `media | ${mediaid}`;
+            campaignKeyword = 'media';
         }
 			
-		// search
-		else if(param.startsWith(startParam_search))
+		    // search
+		    else if(param.startsWith(startParam_search))
         {
             console.log(`commands, begin to search`);
             var parts = param.split('-');
@@ -69,12 +74,25 @@ module.exports = function()
             global.fn.m.userAbility.user.search.search(userid, word, user);
             
             eventLable = `search | ${word}`;
+            campaignKeyword = 'search';
         }
         
         // analytic
         let eventCategory = 'backlink';
         let eventAction = 'open a section';
-        //let eventOptions = {'dr': param};
+//         let eventOptions = {
+//           // Document Referrer
+//           //'dr': fn.getStartLink(param),
+//           //campaign name
+//           'cn': campaignKeyword,
+//           //Campaign Source
+//           'cs': '(backlink)',
+//           //Campaign Medium
+//           'cm': 'forwarding link',
+//           //Campaign Keyword
+//           'ck': campaignKeyword
+//         };
+      
         fn.m.analytic.trackEvent(userid, eventCategory, eventAction, eventLable);
     });
 }

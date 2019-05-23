@@ -12,8 +12,7 @@ tcms.start(option);
 
 // add commerce
 let commerce = require('telegram-cms-commerce');
-commerce.startServer(80);
 tcms.addModule(commerce.module);
+//commerce.startServer(100);
 
-// start express
-//require('./express/bin/www');
+module.exports.app = commerce.app;

@@ -8,9 +8,12 @@ var sendPlayListTouser = function(userid, playlist)
     var fn_like     = queryTag['userAbility'] + '-' + queryTag['user'] + '-' + queryTag['playlist'] + '-' + queryTag['like'] + '-' + playlist.id;
 
     //medias
-    playlist.list.forEach(element => {
-        fn_ = queryTag['userAbility'] + '-' + queryTag['user'] + '-' + queryTag['playlist'] + '-' + queryTag['showmedia'] + '-' + element._id;
-        text = `${element.albumartist}: ${element.titleIndex.ku_so}`;
+    let totalItems = playlist.list.length;
+    playlist.list.forEach((element, i) => {
+        let number = totalItems - i;
+        let fn_ = queryTag['userAbility'] + '-' + queryTag['user'] + '-' + queryTag['playlist'] + '-' + queryTag['showmedia'] + '-' + element._id;
+        let title = (element.titleIndex.ku_so) ? element.titleIndex.ku_so : element.title;
+        let text = `${number}. ${element.albumartist}: ${title}`;
         detailArr.push([{'text': text, 'callback_data': fn_}]);
     });
 
@@ -63,7 +66,7 @@ var getallmedia = function(query, id){
         for (let index = 0; index < playlist.list.length; index++) {
             await global.fn.sleep(500);
             const item = playlist.list[index];
-            media.showbyid(query.from.id, query.message.chat.id, item._id, {'mode':'main'});
+            media.showbyid(query.from.id, query.message.chat.id, item._id, {'mode':'main', 'eventAction':'playlist'});
         }
         
         // analytic
@@ -167,9 +170,11 @@ var query = function(query, speratedQuery, user)
     //close
     if (speratedQuery[3] === queryTag['close']) close(query);
     //show media
-    else if(speratedQuery[3] === queryTag['showmedia']) media.showbyid(query.from.id, query.message.chat.id, speratedQuery[last], {'mode':'main'});
+    else if(speratedQuery[3] === queryTag['showmedia']) 
+      media.showbyid(query.from.id, query.message.chat.id, speratedQuery[last], {'mode':'main', 'eventAction':'playlist'});
     //get all media
-    else if (speratedQuery[3] === queryTag['getallmedia']) getallmedia(query, speratedQuery[last]);
+    else if (speratedQuery[3] === queryTag['getallmedia']) 
+      getallmedia(query, speratedQuery[last]);
 
 }
 

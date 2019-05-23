@@ -14,7 +14,7 @@ var getview_main = function(liked, versions, mediaid, option={})
     versions.forEach(version =>
     {
         if(version.name == option.version) return;
-        var ver_fn = queryTag['userAbility'] + '-' + queryTag['user'] + '-' + queryTag['media'] + '-' + queryTag['version'] + '-' + version.name + '-' + mediaid;
+        var ver_fn = queryTag['userAbility'] + '-' + queryTag['user'] + '-' + queryTag['media'] + '-' + queryTag['version'] + '-' + version.name + '-' + option.eventAction + '-' + mediaid;
         var type = `(${version.type} : ${version.name})`;
         var vername = (version.name != 'demo') ? `📥 دانلود کامل: ${type}` : `نسخه: ${type}`
         var btn = {'text': vername, 'callback_data': ver_fn}
@@ -23,7 +23,7 @@ var getview_main = function(liked, versions, mediaid, option={})
     //detailArr.push(versionrow);
 
     //original version
-    var orig_fn = queryTag['userAbility'] + '-' + queryTag['user'] + '-' + queryTag['media'] + '-' + queryTag['version'] + '-' + 'orginal' + '-' + mediaid;
+    var orig_fn = queryTag['userAbility'] + '-' + queryTag['user'] + '-' + queryTag['media'] + '-' + queryTag['version'] + '-' + 'orginal' + '-' + option.eventAction + '-' + mediaid;
     var orig_btn = {'text': 'کیفیت اصلی', 'callback_data': orig_fn}
     if(detailArr.length == 0) detailArr.push([orig_btn]);
 
@@ -93,7 +93,10 @@ var show = async function(userid, chatid, returnedmedia, flag)
     var sendType = (vDetail.type == 'ogg') ? 'voice' : 'sound';
 
     // markup
-    if(flag.mode === 'main') detailArr = getview_main(liked, media.versions, media._id, {'version': vDetail.name});
+    if(flag.mode === 'main') {
+      flag.version = vDetail.name;
+      detailArr = getview_main(liked, media.versions, media._id, flag);
+    }
     var markup = {'caption' : description, "reply_markup" : {"inline_keyboard" : detailArr}};
 
     //check daily limitation ---------------------------------------------
@@ -128,7 +131,7 @@ var show = async function(userid, chatid, returnedmedia, flag)
     
     // analytic
     let eventCategory = 'media';
-    let eventAction = `download song | ${version}`;
+    let eventAction = `download song | ${version} | from ${flag.eventAction}`;
     let eventLabel = media.title;
     fn.m.analytic.trackEvent(userid, eventCategory, eventAction, eventLabel);
 }
@@ -166,6 +169,7 @@ var query = function(query, speratedQuery)
 {
     var queryTag = fn.mstr.userAbility.query;
     var last = speratedQuery.length-1;
+    let mediaid = speratedQuery[last];
 
     // close
     if (speratedQuery[3] === queryTag['close'])
@@ -173,16 +177,15 @@ var query = function(query, speratedQuery)
 
     // like
     else if (speratedQuery[3] === queryTag['like'])
-        like(query, speratedQuery[last]);
+        like(query, mediaid);
 
     // switch version
     else if (speratedQuery[3] === queryTag['version'])
     {
         var versionName = speratedQuery[4];
-        var mediaid = speratedQuery[last];
-
+        let eventAction = speratedQuery[last-1];
         close(query);
-        showbyid(query.from.id, query.message.chat.id, mediaid, {'mode':'main', 'version': versionName});
+        showbyid(query.from.id, query.message.chat.id, mediaid, {'mode':'main', 'version': versionName, 'eventAction':eventAction});
     }
 
     // // show play lists
