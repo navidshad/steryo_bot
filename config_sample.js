@@ -18,9 +18,11 @@ module.exports = {
         'sendbox'           :true,
         'chanelChecker'     :true,
         'favorites'         :false,
+        'telegram-cms-commerce': true,
 
-        'arc'      :true,
+        'arc'               :true,
         'userAbility'       :true,
+        'tariff'            :true,
     },
 
     //web
