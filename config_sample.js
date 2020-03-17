@@ -27,6 +27,7 @@ module.exports = {
 
     //web
     serverport:3002,
+    domain: '',
 
     //folders
     temp : require('path').join(__dirname, 'temp'),
